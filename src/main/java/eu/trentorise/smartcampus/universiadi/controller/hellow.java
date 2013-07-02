@@ -37,7 +37,7 @@ public class hellow {
 		Evento v = new Evento();
 		g.setNome("notte bianca");
 		g.setData("12/02/2013");
-		g.setDescrizione("la notte che tutti aspettiamo");
+		g.setDescrizione("la notte che tutti");
 		
 		yep.add(g);
 		//yep.add(v);
