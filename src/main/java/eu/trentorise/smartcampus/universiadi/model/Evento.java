@@ -12,7 +12,14 @@ public class Evento implements Serializable {
 	private String nome;
 	private String data;
 	private String descrizione;
+	private Long id;
 	
+	public long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
+	}
 	public String getNome() {
 		return nome;
 	}
