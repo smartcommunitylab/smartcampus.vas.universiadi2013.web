@@ -37,32 +37,13 @@ public class hellow {
 		Evento v = new Evento();
 		g.setNome("notte bianca");
 		g.setData("12/02/2013");
-		g.setDescrizione("la notte che tutti");
+		g.setDescrizione("la notte che tutti penzone");
 		
 		yep.add(g);
 		//yep.add(v);
 		
 		
 		return yep;
-	}
-	
-	@RequestMapping(method = RequestMethod.GET, value = "/eventox")
-	public @ResponseBody
-	String getEventix(HttpServletRequest request,
-			HttpServletResponse response, HttpSession session)
-			{
-		List<Evento> yep = new ArrayList<Evento>();
-		Evento g = new Evento();
-		Evento v = new Evento();
-		g.setNome("notte bianca");
-		g.setData("12/02/2013");
-		g.setDescrizione("la notte che tutti aspettiamo");
-		
-		yep.add(g);
-		//yep.add(v);
-		
-		
-		return "casa";
 	}
 		
 
