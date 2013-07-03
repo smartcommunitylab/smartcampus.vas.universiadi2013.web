@@ -8,6 +8,7 @@ import it.sayservice.platform.smartplanner.data.message.journey.SingleJourney;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,32 +24,65 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import eu.trentorise.smartcampus.ac.provider.filters.AcProviderFilter;
 import eu.trentorise.smartcampus.journeyplanner.JourneyPlannerConnector;
 import eu.trentorise.smartcampus.universiadi.model.Evento;
+import eu.trentorise.smartcampus.universiadi.model.UserData;
 
 
 @Controller("hellow")
 public class hellow {
+	
+	private List<Evento> yep = new ArrayList<Evento>();
+	private List<UserData> ulist = new ArrayList<UserData>();
+	private UserData us1 = new UserData();
+	private UserData us2 = new UserData();
+	private Evento g = new Evento();
+	private Evento v = new Evento();
+	
+	public hellow()
+	{
+		g.setId(1111);
+		g.setNome("notte bianca");
+		g.setData(Calendar.getInstance().getTimeInMillis());
+		g.setDescrizione("la notte che tutti penzone");
+		g.setGeo(45.282882, 11.8788787);
+		g.setIndirizzo("Sommarive");
+		g.setRuolo(2);
+		g.setAmbito("mensa");
+		
+		v.setId(9999);
+		v.setNome("YEP!_Party");
+		v.setData(1372862264792L);
+		v.setDescrizione("hofdos");
+		v.setGeo(45.282772, 11.8785487);
+		v.setIndirizzo("Cascata");
+		v.setRuolo(1);
+		v.setAmbito("cucina");
+		
+		us1.setNome("Jonny");
+		us1.setCognome("Jupiter");
+		us1.setNumeroTelefonico("32131213");
+		us1.setRuolo(2);
+		us1.setBadgeCode(1231L);
+		us1.setAmbito("fabbrica di GiuseppeSimone");
+		
+		us2.setNome("Cordata");
+		us2.setCognome("Penzo");
+		us2.setNumeroTelefonico("0912081");
+		us2.setRuolo(1);
+		us2.setBadgeCode(1281L);
+		us2.setAmbito("Falegnameria");
+		
+		
+		ulist.add(us1);
+		ulist.add(us2);
+		yep.add(g);
+		yep.add(v);
+	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/evento")
 	public @ResponseBody
 	List<Evento> getEventi(HttpServletRequest request,
 			HttpServletResponse response, HttpSession session)
 			{
-		List<Evento> yep = new ArrayList<Evento>();
-		Evento g = new Evento();
-		Evento v = new Evento();
-		g.setId(1111);
-		g.setNome("notte bianca");
-		g.setData("12/02/2013");
-		g.setDescrizione("la notte che tutti penzone");
-		
-		v.setId(9999);
-		v.setNome("YEP!_Party");
-		v.setData("29/06/2013");
-		v.setDescrizione("hofdos");
-		yep.add(g);
-		yep.add(v);
-		
-		
 		return yep;
 	}
 		
@@ -59,49 +93,15 @@ public class hellow {
 			@PathVariable("id") Long id,
 			HttpServletResponse response, HttpSession session)
 			{
-		List<Evento> evn = new ArrayList<Evento>();
-		Evento g = new Evento();
-		g.setId(id);
-		g.setNome("notte biancaaa");
-		g.setData("12/02/2013");
-		g.setDescrizione("la notte che tutti penzone");
-		
-		evn.add(g);
-		
-		return evn;
-	}
-	
-	@RequestMapping(method = RequestMethod.GET, value = "/evento/data/{data}")
-	public @ResponseBody
-	List<Evento> getEventoFromData(HttpServletRequest request,
-			@PathVariable("data") String data,
-			HttpServletResponse response, HttpSession session)
-			{
-		List<Evento> evl = new ArrayList<Evento>();
-		List<Evento> evappl = new ArrayList<Evento>();
-		Evento t = new Evento();
-		Evento s = new Evento();
-		Evento apg = new Evento();
-		
-		t.setId(0);
-		t.setNome("notte biancaaa");
-		t.setData("12-02-2013");
-		t.setDescrizione("la notte che tutti penzone");
-		
-		s.setId(1);
-		s.setNome("fda");
-		s.setData("15-02-2013");
-		s.setDescrizione("fddsfsgdfgd");
-		
-		evl.add(t);
-		evl.add(s);
 		Integer i;
-		int g = evl.size();
+		Evento apg;
+		List<Evento> evappl = new ArrayList<Evento>();
+		int g = yep.size();
 		for(i=0;i<g;i++){
 			
-			apg = evl.get(i);
+			apg = yep.get(i);
 			
-			if(apg.getData().compareTo(data)==0){
+			if(apg.getId()==id){
 				evappl.add(apg);
 			}
 			
@@ -109,4 +109,57 @@ public class hellow {
 		
 		return evappl;
 	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/evento/data/{data}")
+	public @ResponseBody
+	List<Evento> getEventoFromData(HttpServletRequest request,
+			@PathVariable("data") long data,
+			HttpServletResponse response, HttpSession session)
+			{
+		
+		Integer i;
+		Evento apg;
+		List<Evento> evappl = new ArrayList<Evento>();
+		int g = yep.size();
+		for(i=0;i<g;i++){
+			
+			apg = yep.get(i);
+			
+			if(apg.getData()==data){
+				evappl.add(apg);
+			}
+			
+		}
+		
+		return evappl;
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/user/{tok}")
+	public @ResponseBody
+	List<UserData> getUserData(HttpServletRequest request,
+			@PathVariable("tok") Long tok,
+			HttpServletResponse response, HttpSession session)
+			{
+		Integer i;
+		UserData apg;
+		List<UserData> evappl = new ArrayList<UserData>();
+		int g = ulist.size();
+		for(i=0;i<g;i++){
+			
+			apg = ulist.get(i);
+			
+			if(apg.getBadgeCode()==tok){
+				evappl.add(apg);
+			}
+			
+		}
+		
+		return evappl;
+	}
+	
+	
+	
+	
+	
+	
 }
