@@ -53,20 +53,60 @@ public class hellow {
 	}
 		
 
-	@RequestMapping(method = RequestMethod.GET, value = "/evento/{id}")
+	@RequestMapping(method = RequestMethod.GET, value = "/evento/id/{id}")
 	public @ResponseBody
-	Evento getEventoFromId(HttpServletRequest request,
+	List<Evento> getEventoFromId(HttpServletRequest request,
 			@PathVariable("id") Long id,
 			HttpServletResponse response, HttpSession session)
 			{
-		
+		List<Evento> evn = new ArrayList<Evento>();
 		Evento g = new Evento();
 		g.setId(id);
 		g.setNome("notte biancaaa");
 		g.setData("12/02/2013");
 		g.setDescrizione("la notte che tutti penzone");
 		
+		evn.add(g);
 		
-		return g;
+		return evn;
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/evento/data/{data}")
+	public @ResponseBody
+	List<Evento> getEventoFromData(HttpServletRequest request,
+			@PathVariable("data") String data,
+			HttpServletResponse response, HttpSession session)
+			{
+		List<Evento> evl = new ArrayList<Evento>();
+		List<Evento> evappl = new ArrayList<Evento>();
+		Evento t = new Evento();
+		Evento s = new Evento();
+		Evento apg = new Evento();
+		
+		t.setId(0);
+		t.setNome("notte biancaaa");
+		t.setData("12-02-2013");
+		t.setDescrizione("la notte che tutti penzone");
+		
+		s.setId(1);
+		s.setNome("fda");
+		s.setData("15-02-2013");
+		s.setDescrizione("fddsfsgdfgd");
+		
+		evl.add(t);
+		evl.add(s);
+		Integer i;
+		int g = evl.size();
+		for(i=0;i<g;i++){
+			
+			apg = evl.get(i);
+			
+			if(apg.getData().compareTo(data)==0){
+				evappl.add(apg);
+			}
+			
+		}
+		
+		return evappl;
 	}
 }
