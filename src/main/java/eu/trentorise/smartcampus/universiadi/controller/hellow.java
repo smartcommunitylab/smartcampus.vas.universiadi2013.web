@@ -24,16 +24,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import eu.trentorise.smartcampus.ac.provider.filters.AcProviderFilter;
 import eu.trentorise.smartcampus.journeyplanner.JourneyPlannerConnector;
 import eu.trentorise.smartcampus.universiadi.model.Evento;
-import eu.trentorise.smartcampus.universiadi.model.UserData;
+import eu.trentorise.smartcampus.universiadi.model.UserObject;
+
 
 
 @Controller("hellow")
 public class hellow {
 	
 	private List<Evento> yep = new ArrayList<Evento>();
-	private List<UserData> ulist = new ArrayList<UserData>();
-	private UserData us1 = new UserData();
-	private UserData us2 = new UserData();
+	private List<UserObject> ulist = new ArrayList<UserObject>();
+	private UserObject us1 = new UserObject();
+	private UserObject us2 = new UserObject();
 	private Evento g = new Evento();
 	private Evento v = new Evento();
 	
@@ -136,13 +137,13 @@ public class hellow {
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/user/{tok}")
 	public @ResponseBody
-	List<UserData> getUserData(HttpServletRequest request,
+	List<UserObject> getUserData(HttpServletRequest request,
 			@PathVariable("tok") Long tok,
 			HttpServletResponse response, HttpSession session)
 			{
 		Integer i;
-		UserData apg;
-		List<UserData> evappl = new ArrayList<UserData>();
+		UserObject apg;
+		List<UserObject> evappl = new ArrayList<UserObject>();
 		int g = ulist.size();
 		for(i=0;i<g;i++){
 			
