@@ -44,19 +44,21 @@ public class hellow {
 			e1.setDescrizione("Descrizione "+i);
 			e1.setGeo(45.282882, 11.8788787);
 			e1.setIndirizzo("Indirizzo "+i);
-			e1.setTipoSport("Tipo sport "+i);
 			if (i < 100 && i % 2 == 0)
 			{
+				e1.setTipoSport("Skating");
 				e1.setRuolo(0);
 				e1.setAmbito("Ambito 0");
 			}
 			else if (i >= 100 && i % 2 == 0)
 			{
+				e1.setTipoSport("Curling");
 				e1.setRuolo(1);
 				e1.setAmbito("Ambito 1");
 			}
 			else
 			{
+				e1.setTipoSport("Snowboard");
 				e1.setRuolo(-1);
 				e1.setAmbito("");
 			}
@@ -182,7 +184,7 @@ public class hellow {
 			HttpServletResponse response, HttpSession session)
 			{
 		
-		Integer i,j;
+		Integer i;
 		Evento evnt = new Evento();
 		List<Evento> evappl = new ArrayList<Evento>();
 		

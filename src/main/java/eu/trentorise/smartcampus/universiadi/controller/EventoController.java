@@ -22,7 +22,7 @@ public class EventoController {
 	@Autowired
 	MongoTemplate db;
 
-	@RequestMapping(method = RequestMethod.GET, value = "/evento/{id}")
+	@RequestMapping(method = RequestMethod.GET, value = "/evento/db/{id}")
 	public @ResponseBody
 	Evento getEventoFromId(HttpServletRequest request,
 			@PathVariable("id") long id, HttpServletResponse response,
@@ -33,6 +33,7 @@ public class EventoController {
 		db.save(x);
 
 		Criteria crit = new Criteria();
+		//crit.and()
 		crit.and("id").is(id);
 		Query query = Query.query(crit);
 
