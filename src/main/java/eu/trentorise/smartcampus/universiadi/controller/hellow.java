@@ -39,7 +39,7 @@ public class hellow {
 	
 	public hellow()
 	{
-		g.setId(1111);
+		g.setId("1111");
 		g.setNome("notte bianca");
 		g.setData(Calendar.getInstance().getTimeInMillis());
 		g.setDescrizione("la notte che tutti penzone");
@@ -48,7 +48,7 @@ public class hellow {
 		g.setRuolo(2);
 		g.setAmbito("mensa");
 		
-		v.setId(9999);
+		v.setId("9999");
 		v.setNome("YEP!_Party");
 		v.setData(1372862264792L);
 		v.setDescrizione("hofdos");
@@ -90,7 +90,7 @@ public class hellow {
 	@RequestMapping(method = RequestMethod.GET, value = "/evento/id/{id}")
 	public @ResponseBody
 	List<Evento> getEventoFromId(HttpServletRequest request,
-			@PathVariable("id") Long id,
+			@PathVariable("id") String id,
 			HttpServletResponse response, HttpSession session)
 			{
 		Integer i;

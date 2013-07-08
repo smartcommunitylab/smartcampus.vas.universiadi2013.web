@@ -22,6 +22,12 @@
 			<version>${ac-service-provider-api}</version>
 			<type>jar</type>
 		</dependency>
+		
+		<dependency>
+			<groupId>eu.trentorise.smartcampus</groupId>
+			<artifactId>syncstorage.web</artifactId>
+			<version>1.0</version>
+		</dependency>
 
 		<!-- this -->
 		<dependency>
@@ -127,7 +133,14 @@
 			<groupId>eu.trentorise.smartcampus</groupId>
 			<artifactId>socialservice.client</artifactId>
 			<version>1.0</version>
-		</dependency>					
+		</dependency>			
+		
+			<dependency>
+			<groupId>eu.trentorise.smartcampus</groupId>
+			<artifactId>smartcampus.vas.commons</artifactId>
+			<version>1.1</version>
+		</dependency>
+				
 		
 	</dependencies>
 
