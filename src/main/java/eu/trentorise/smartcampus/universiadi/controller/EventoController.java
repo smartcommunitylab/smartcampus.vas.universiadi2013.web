@@ -1,7 +1,5 @@
 package eu.trentorise.smartcampus.universiadi.controller;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -27,11 +25,11 @@ public class EventoController {
 	@RequestMapping(method = RequestMethod.GET, value = "/evento/{id}")
 	public @ResponseBody
 	Evento getEventoFromId(HttpServletRequest request,
-			@PathVariable("id") String id, HttpServletResponse response,
+			@PathVariable("id") long id, HttpServletResponse response,
 			HttpSession session) {
 
 		Evento x = new Evento();
-		x.setId(id);
+		x.setID(id);
 		db.save(x);
 
 		Criteria crit = new Criteria();

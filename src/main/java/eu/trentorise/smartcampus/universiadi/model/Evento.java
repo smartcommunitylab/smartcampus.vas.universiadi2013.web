@@ -1,15 +1,19 @@
 package eu.trentorise.smartcampus.universiadi.model;
 
+import java.io.Serializable;
+
 import eu.trentorise.smartcampus.presentation.data.BasicObject;
 
-public class Evento extends BasicObject  {
-
-	
+public class Evento implements Serializable{
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = -6012628151126532583L;
 	
 	private String nome;
-	private Long data;
+	private long data;
 	private String descrizione;
+	private long ID;
 	private GeoPoint geo;
 	private String indirizzo;
 	private String tipoSport;
@@ -45,6 +49,12 @@ public class Evento extends BasicObject  {
 	}
 	public void setGeo(double lat, double lng) {
 		this.geo = new GeoPoint(lat, lng);
+	}
+	public long getID() {
+		return ID;
+	}
+	public void setID(long id) {
+		this.ID = id;
 	}
 	public String getNome() {
 		return nome;

@@ -1,16 +1,13 @@
 package eu.trentorise.smartcampus.universiadi.controller;
 
-import it.sayservice.platform.smartplanner.data.message.Itinerary;
-import it.sayservice.platform.smartplanner.data.message.Position;
-import it.sayservice.platform.smartplanner.data.message.RType;
-import it.sayservice.platform.smartplanner.data.message.TType;
-import it.sayservice.platform.smartplanner.data.message.journey.SingleJourney;
-
+import java.awt.Event;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Random;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -27,7 +24,6 @@ import eu.trentorise.smartcampus.universiadi.model.Evento;
 import eu.trentorise.smartcampus.universiadi.model.UserObject;
 
 
-
 @Controller("hellow")
 public class hellow {
 	
@@ -35,66 +31,80 @@ public class hellow {
 	private List<UserObject> ulist = new ArrayList<UserObject>();
 	private UserObject us1 = new UserObject();
 	private UserObject us2 = new UserObject();
-	private Evento g = new Evento();
-	private Evento v = new Evento();
+	
 	
 	public hellow()
 	{
-		g.setId("1111");
-		g.setNome("notte bianca");
-		g.setData(Calendar.getInstance().getTimeInMillis());
-		g.setDescrizione("la notte che tutti penzone");
-		g.setGeo(45.282882, 11.8788787);
-		g.setIndirizzo("Sommarive");
-		g.setRuolo(2);
-		g.setAmbito("mensa");
-		
-		v.setId("9999");
-		v.setNome("YEP!_Party");
-		v.setData(1372862264792L);
-		v.setDescrizione("hofdos");
-		v.setGeo(45.282772, 11.8785487);
-		v.setIndirizzo("Cascata");
-		v.setRuolo(1);
-		v.setAmbito("cucina");
-		
-		us1.setNome("Jonny");
-		us1.setCognome("Jupiter");
-		us1.setNumeroTelefonico("32131213");
-		us1.setRuolo(2);
-		us1.setBadgeCode(1231L);
-		us1.setAmbito("fabbrica di GiuseppeSimone");
-		
-		us2.setNome("Cordata");
-		us2.setCognome("Penzo");
-		us2.setNumeroTelefonico("0912081");
-		us2.setRuolo(1);
-		us2.setBadgeCode(1281L);
-		us2.setAmbito("Falegnameria");
-		
-		
-		ulist.add(us1);
-		ulist.add(us2);
-		yep.add(g);
-		yep.add(v);
+		for (int i=0; i<200; i++)
+		{
+			Evento e1 = new Evento();
+			e1.setID(i);
+			e1.setNome("Evento "+i);
+			e1.setData(400);
+			e1.setDescrizione("Descrizione "+i);
+			e1.setGeo(45.282882, 11.8788787);
+			e1.setIndirizzo("Indirizzo "+i);
+			e1.setTipoSport("Tipo sport "+i);
+			if (i < 100 && i % 2 == 0)
+			{
+				e1.setRuolo(0);
+				e1.setAmbito("Ambito 0");
+			}
+			else if (i >= 100 && i % 2 == 0)
+			{
+				e1.setRuolo(1);
+				e1.setAmbito("Ambito 1");
+			}
+			else
+			{
+				e1.setRuolo(-1);
+				e1.setAmbito("");
+			}
+			
+			yep.add(e1);
+		}
 	}
+	
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/evento")
 	public @ResponseBody
 	List<Evento> getEventi(HttpServletRequest request,
 			HttpServletResponse response, HttpSession session)
 			{
-		return yep;
+		
+		int l;
+		Evento evnt = new Evento();
+		List<Evento> evappl = new ArrayList<Evento>();
+		
+		
+		  for(l=0;l<yep.size();l++){
+			  
+			  evnt = yep.get(l);
+			  
+			if(evnt.getRuolo()==-1 && evnt.getAmbito().equals("")){
+				evappl.add(evnt);
+			}
+			
+		  }
+		  
+		return evappl;
 	}
 		
-
+	@RequestMapping(method = RequestMethod.GET, value = "/user")
+	public @ResponseBody
+	List<UserObject> getAllUsers(HttpServletRequest request, HttpServletResponse response, HttpSession session)
+	{
+	
+	return ulist;
+	}
+	
 	@RequestMapping(method = RequestMethod.GET, value = "/evento/id/{id}")
 	public @ResponseBody
 	List<Evento> getEventoFromId(HttpServletRequest request,
-			@PathVariable("id") String id,
+			@PathVariable("id") Long id,
 			HttpServletResponse response, HttpSession session)
 			{
-		Integer i;
+		int i;
 		Evento apg;
 		List<Evento> evappl = new ArrayList<Evento>();
 		int g = yep.size();
@@ -102,7 +112,7 @@ public class hellow {
 			
 			apg = yep.get(i);
 			
-			if(apg.getId()==id){
+			if(apg.getID()==id){
 				evappl.add(apg);
 			}
 			
@@ -111,56 +121,132 @@ public class hellow {
 		return evappl;
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/evento/data/{data}")
+	@RequestMapping(method = RequestMethod.GET, value = "/evento/{user_ambito}/{user_ruolo}/{data}")
 	public @ResponseBody
-	List<Evento> getEventoFromData(HttpServletRequest request,
+	List<Evento> getEventi(HttpServletRequest request,
+			@PathVariable("data") long data,
+			@PathVariable("user_ambito") String user_ambito,
+			@PathVariable("user_ruolo") int user_ruolo,
+			HttpServletResponse response, HttpSession session)
+			{
+		
+		int i;
+		Evento evnt = new Evento();
+		List<Evento> evappl = new ArrayList<Evento>();
+		
+		
+		  for(i=0;i<yep.size();i++){
+			  
+			  evnt = yep.get(i);
+			  
+			if(evnt.getData()==data && evnt.getAmbito().equals(user_ambito) && evnt.getRuolo()<=user_ruolo){
+				evappl.add(evnt);
+			}
+			
+		  }
+		  
+		return evappl;
+	}
+	
+
+	@RequestMapping(method = RequestMethod.GET, value = "/evento/{user_ambito}/{user_ruolo}")
+	public @ResponseBody
+	List<Evento> getEventi(HttpServletRequest request,
+			@PathVariable("user_ambito") String user_ambito,
+			@PathVariable("user_ruolo") int user_ruolo,
+			HttpServletResponse response, HttpSession session)
+			{
+		
+		int k;
+		Evento evnt = new Evento();
+		List<Evento> evappl = new ArrayList<Evento>();
+		
+		
+		  for(k=0;k<yep.size();k++){
+			  
+			  evnt = yep.get(k);
+			  
+			if(evnt.getAmbito().equals(user_ambito) && evnt.getRuolo()<=user_ruolo){
+				evappl.add(evnt);
+			}
+			
+		  }
+		  
+		return evappl;
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/evento/{data}")
+	public @ResponseBody
+	List<Evento> getEventi(HttpServletRequest request,
 			@PathVariable("data") long data,
 			HttpServletResponse response, HttpSession session)
 			{
 		
-		Integer i;
-		Evento apg;
+		Integer i,j;
+		Evento evnt = new Evento();
 		List<Evento> evappl = new ArrayList<Evento>();
-		int g = yep.size();
-		for(i=0;i<g;i++){
-			
-			apg = yep.get(i);
-			
-			if(apg.getData()==data){
-				evappl.add(apg);
+		
+		
+		  for(i=0;i<yep.size();i++){
+			  
+			  evnt = yep.get(i);
+			  
+			if(evnt.getData()==data && evnt.getRuolo()==-1){
+				evappl.add(evnt);
 			}
 			
-		}
-		
+		  }
+		  
 		return evappl;
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/user/{tok}")
+	
+	
+//	@RequestMapping(method = RequestMethod.GET, value = "/user/{tok}")
+//	public @ResponseBody
+//	List<UserObject> getUserData(HttpServletRequest request,
+//			@PathVariable("tok") String tok,
+//			HttpServletResponse response, HttpSession session)
+//			{	
+//		Integer i;
+//		UserObject apg;
+//		List<UserObject> evappl = new ArrayList<UserObject>();
+//		int g = ulist.size();
+//		for(i=0;i<g;i++){
+//			
+//			apg = ulist.get(i);
+//			
+//			if(apg.getBadgeCode()==tok){
+//				evappl.add(apg);
+//			}
+//			
+//		}
+//		
+//		return evappl;
+//	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/evento/sport/{sport}")
 	public @ResponseBody
-	List<UserObject> getUserData(HttpServletRequest request,
-			@PathVariable("tok") Long tok,
+	List<Evento> getEventiPerSport(HttpServletRequest request,
+			@PathVariable("sport") String sport,
 			HttpServletResponse response, HttpSession session)
 			{
-		Integer i;
-		UserObject apg;
-		List<UserObject> evappl = new ArrayList<UserObject>();
-		int g = ulist.size();
-		for(i=0;i<g;i++){
-			
-			apg = ulist.get(i);
-			
-			if(apg.getBadgeCode()==tok){
-				evappl.add(apg);
+			int i;
+			List<Evento> evappl = new ArrayList<Evento>();
+			Evento evn;
+			int siz = yep.size();
+			for(i=0;i<siz;i++){
+				
+				evn = yep.get(i);
+				
+				if(evn.getTipoSport().equals(sport)){
+					evappl.add(evn);
+				}
 			}
-			
-		}
-		
-		return evappl;
+		return	evappl;
 	}
 	
 	
-	
-	
-	
+			
 	
 }
