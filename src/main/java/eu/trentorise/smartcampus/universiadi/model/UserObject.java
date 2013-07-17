@@ -2,16 +2,16 @@ package eu.trentorise.smartcampus.universiadi.model;
 
 import java.io.Serializable;
 
-public class UserObject implements Serializable  {
+public class UserObject  {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -2050064090826276842L;
+	
 	
 	private String nome;
 	private String cognome;
 	private String ambito; //String che rappresenta l'ambito (es. Mensa1)
+	String user;
+	String password;
+	String token;
 	private int ruolo;  //int che rappresenta il ruolo (es. 2)
 	private long badgeCode;
 	private String numeroTelefonico;
@@ -25,6 +25,24 @@ public class UserObject implements Serializable  {
 	}
 	public String getCognome() {
 		return cognome;
+	}
+	public String getUser() {
+		return user;
+	}
+	public void setUser(String user) {
+		this.user = user;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public String getToken() {
+		return token;
+	}
+	public void setToken(String token) {
+		this.token = token;
 	}
 	public void setCognome(String cognome) {
 		this.cognome = cognome;
