@@ -8,16 +8,18 @@ public class POIObject implements Serializable {
 	
 	
 	private static final long serialVersionUID = -2725604716213011328L;
-	private enum POI {GetTicket, InfoPoints, GamePlaces, Hotels, Other}
+	
 	private String nome;
-	private POI poi;    
+	private String poitype;
+	private GeoPoint GPS;
 
 	
-    public POI getColor(){
-       return poi; 
+	
+    public String getPOIType(){
+       return poitype; 
     }
-    public void setColor(POI poi){
-        this.poi = poi;
+    public void setPOIType(String poi){
+        this.poitype = poi;
     }   
 	public String getNome() {
 		return nome;
@@ -31,7 +33,6 @@ public class POIObject implements Serializable {
 	public void setGPS(GeoPoint gPS) {
 		GPS = gPS;
 	}
-	private GeoPoint GPS;
 
 	
 }

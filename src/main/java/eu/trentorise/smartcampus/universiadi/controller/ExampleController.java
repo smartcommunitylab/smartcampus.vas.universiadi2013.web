@@ -175,6 +175,8 @@ public class ExampleController {
 	/*
 	 * Get all notifications
 	 */
+	
+	/*
 	@RequestMapping(method = RequestMethod.GET, value = "/getnotifications")
 	public @ResponseBody
 	List<Notification> getNotifications(HttpServletRequest request,
@@ -195,6 +197,7 @@ public class ExampleController {
 		}
 		return null;
 	}
+	*/
 
 	/*
 	 * Example to get all storage application accounts binded to a specific
@@ -263,6 +266,7 @@ public class ExampleController {
 	 * @throws SocialServiceException
 	 * @throws CommunicatorConnectorException
 	 */
+	/*
 	@RequestMapping(method = RequestMethod.GET, value = "/register/user/")
 	public @ResponseBody
 	boolean registerUser(HttpServletRequest request) throws SecurityException,
@@ -278,7 +282,7 @@ public class ExampleController {
 		return true;
 
 	}
-	
+	*/
 	
 
 	/**
@@ -288,7 +292,7 @@ public class ExampleController {
 	 * @throws SecurityException
 	 * @throws SocialServiceException
 	 * @throws CommunicatorConnectorException
-	 */
+	 *//*
 	@RequestMapping(method = RequestMethod.GET, value = "/register/app/{senderId}")
 	public @ResponseBody
 	boolean registerApp(HttpServletRequest request,
@@ -304,6 +308,6 @@ public class ExampleController {
 		//communicatorConnector.registerApp(token, senderId);
 		return true;
 
-	}
+	} */
 
 }
