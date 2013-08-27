@@ -1,4 +1,4 @@
-package eu.trentorise.smartcampus.universiadi.controller;
+package eu.trentorise.smartcampus.universiadi.Controller;
 
 import java.awt.Cursor;
 import java.io.BufferedReader;
@@ -50,11 +50,8 @@ import com.mongodb.DBObject;
 
 import eu.trentorise.smartcampus.presentation.common.exception.DataException;
 import eu.trentorise.smartcampus.presentation.common.exception.NotFoundException;
-import eu.trentorise.smartcampus.universiadi.model.AnswerObject;
-import eu.trentorise.smartcampus.universiadi.model.Evento;
-import eu.trentorise.smartcampus.universiadi.model.FAQObject;
-import eu.trentorise.smartcampus.universiadi.model.Faq;
-import eu.trentorise.smartcampus.universiadi.model.UserObject;
+import eu.trentorise.smartcampus.universiadi.Model.FAQObj;
+import eu.trentorise.smartcampus.universiadi.Model.UserObj;
 
 @Controller("FaqController")
 public class FaqController {
@@ -112,8 +109,7 @@ public class FaqController {
 
 	}
 
-	public ArrayList<ExtendedAnswer> getAnswerFromTag(MongoTemplate db,
-			ArrayList<String> tagList) {
+	public ArrayList<ExtendedAnswer> getAnswerFromTag(ArrayList<String> tagList) {
 		ArrayList<ExtendedAnswer> mResult = new ArrayList<ExtendedAnswer>();
 		Map<Integer, Integer> mapID = new HashMap<Integer, Integer>();
 
@@ -162,6 +158,11 @@ public class FaqController {
 			}
 		}
 		return extAnswer;
+	}
+
+	public ArrayList<ExtendedAnswer> getAllAnswer() {
+		// TO-DO
+		return null;
 	}
 
 	private class ValueComparator implements Comparator<Integer> {
@@ -269,7 +270,7 @@ public class FaqController {
 			a = (Integer) cur.next().get("_id");
 			nid = a + 1;
 		}
-		FAQObject x = new FAQObject();
+		FAQObj x = new FAQObj();
 		x.setId(nid);
 		x.setDomanda(domanda);
 		x.setRisposta(risposta);
@@ -315,10 +316,10 @@ public class FaqController {
 	@RequestMapping(method = RequestMethod.POST, value = "/insertfaq")
 	public @ResponseBody
 	void insertfaq(HttpServletRequest request, HttpServletResponse response,
-			HttpSession session, @RequestBody Faq domanda)
+			HttpSession session, @RequestBody FAQObj domanda)
 			throws DataException, IOException, NotFoundException, JSONException {
 
-		dbinsert(domanda.getQuestion(), domanda.getAnswer());
+		dbinsert(domanda.getDomanda(), domanda.getRisposta());
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/sinonimi")
@@ -358,7 +359,7 @@ public class FaqController {
 
 	@RequestMapping(method = RequestMethod.POST, value = "/domanda")
 	public @ResponseBody
-	ArrayList<AnswerObject> domandaFaq(HttpServletRequest request,
+	ArrayList<FAQObj> domandaFaq(HttpServletRequest request,
 			HttpServletResponse response, HttpSession session,
 			@RequestBody String domanda) throws DataException, IOException,
 			NotFoundException {
@@ -385,19 +386,44 @@ public class FaqController {
 				listString.add(stringTemp.toLowerCase());
 			}
 		}
-		ArrayList<AnswerObject> answ = new ArrayList<AnswerObject>();
+		ArrayList<FAQObj> answ = new ArrayList<FAQObj>();
 		Integer tottag = listString.size();
-		ArrayList<ExtendedAnswer> answerList = getAnswerFromTag(db, listString);
+		ArrayList<ExtendedAnswer> answerList = getAnswerFromTag(listString);
 
 		for (ExtendedAnswer answer : answerList) {
 			Integer occ = answer.getNumberOfOccurence();
-			AnswerObject simpleAnsw = new AnswerObject();
-			simpleAnsw.setAnswer(answer.getAnswer());
-			simpleAnsw.setQuestion(answer.getQuestion());
-			simpleAnsw.setTottag(tottag);
-			simpleAnsw.setUsefultag(occ);
+			FAQObj simpleAnsw = new FAQObj();
+			simpleAnsw.setRisposta(answer.getAnswer());
+			simpleAnsw.setDomanda(answer.getQuestion());
+			simpleAnsw.setTotalTag(tottag);
+			simpleAnsw.setUsefulTag(occ);
 
-			if ((simpleAnsw.getTottag() / simpleAnsw.getUsefultag()) <= 2)
+			if ((simpleAnsw.getTotalTag() / simpleAnsw.getUsefulTag()) <= 2)
+				answ.add(simpleAnsw);
+		}
+		// String valueUTF8 = new String(valueISO.getBytes(), "UTF-8");
+		return answ;
+
+	}
+
+	@RequestMapping(method = RequestMethod.POST, value = "/all_domanda")
+	public @ResponseBody
+	ArrayList<FAQObj> allDomandaFaq(HttpServletRequest request,
+			HttpServletResponse response, HttpSession session)
+			throws DataException, IOException, NotFoundException {
+
+		ArrayList<FAQObj> answ = new ArrayList<FAQObj>();
+		ArrayList<ExtendedAnswer> answerList = getAllAnswer();
+
+		for (ExtendedAnswer answer : answerList) {
+			Integer occ = answer.getNumberOfOccurence();
+			FAQObj simpleAnsw = new FAQObj();
+			simpleAnsw.setRisposta(answer.getAnswer());
+			simpleAnsw.setDomanda(answer.getQuestion());
+			simpleAnsw.setTotalTag(0);
+			simpleAnsw.setUsefulTag(occ);
+
+			if ((simpleAnsw.getTotalTag() / simpleAnsw.getUsefulTag()) <= 2)
 				answ.add(simpleAnsw);
 		}
 		// String valueUTF8 = new String(valueISO.getBytes(), "UTF-8");

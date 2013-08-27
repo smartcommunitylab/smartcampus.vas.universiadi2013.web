@@ -1,4 +1,4 @@
-package eu.trentorise.smartcampus.universiadi.controller;
+package eu.trentorise.smartcampus.universiadi.Controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ import com.mongodb.DBObject;
 
 import eu.trentorise.smartcampus.presentation.common.exception.DataException;
 import eu.trentorise.smartcampus.presentation.common.exception.NotFoundException;
-import eu.trentorise.smartcampus.universiadi.model.POIObject;
+import eu.trentorise.smartcampus.universiadi.Model.POIObj;
 
 @Controller("searchController")
 public class SearchController {
