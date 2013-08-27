@@ -27,7 +27,6 @@ public class EventObj implements Serializable {
 	private GeoPoint gps;
 	private String tipoSport;
 
-	private String indirizzo = null;
 	private ArrayList<AtletObj> listaAtleti = null;
 
 	public EventObj(String nome, long data, String descrizione, GeoPoint gps,
@@ -38,8 +37,6 @@ public class EventObj implements Serializable {
 		this.descrizione = descrizione;
 		this.gps = gps;
 		this.tipoSport = tipoSport;
-
-		indirizzo = reverseGeoCoding();
 
 		listaAtleti = new ArrayList<AtletObj>();
 		for (int i = 0; i < 6; i++)
@@ -79,10 +76,6 @@ public class EventObj implements Serializable {
 		this.gps = gps;
 	}
 
-	public String getIndirizzo() {
-		return indirizzo;
-	}
-
 	public String getTipoSport() {
 		return tipoSport;
 	}
@@ -93,53 +86,6 @@ public class EventObj implements Serializable {
 
 	public ArrayList<AtletObj> getListaAtleti() {
 		return listaAtleti;
-	}
-
-	private String reverseGeoCoding() {
-		try {
-
-			URL url = new URL(
-					"http://maps.googleapis.com/maps/api/geocode/json?latlng="
-							+ gps.getLatGPS() + "," + gps.getLngGPS()
-							+ "&sensor=true");
-			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			conn.setRequestMethod("GET");
-			conn.setRequestProperty("Accept", "application/json");
-
-			if (conn.getResponseCode() != 200) {
-				throw new RuntimeException("Failed : HTTP error code : "
-						+ conn.getResponseCode());
-			}
-
-			BufferedReader br = new BufferedReader(new InputStreamReader(
-					(conn.getInputStream())));
-
-			String line = "";
-			String output = "";
-			System.out.println("Output from Server .... \n");
-			while ((line = br.readLine()) != null) {
-				output = output + line;
-			}
-
-			conn.disconnect();
-			indirizzo = new JSONObject(output).getJSONArray("results")
-					.getJSONObject(0).getString("formatted_address");
-			return indirizzo;
-
-		} catch (MalformedURLException e) {
-
-			e.printStackTrace();
-
-		} catch (IOException e) {
-
-			e.printStackTrace();
-
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return null;
 	}
 
 	public static long getSerialversionuid() {
