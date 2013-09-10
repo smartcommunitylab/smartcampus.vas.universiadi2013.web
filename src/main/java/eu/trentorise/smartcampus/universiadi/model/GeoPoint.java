@@ -5,9 +5,10 @@ public class GeoPoint implements Comparable<GeoPoint> {
 	public double latGPS;
 	public double lngGPS;
 
-	public GeoPoint(){
-		this(0,0);
+	public GeoPoint() {
+		this(0, 0);
 	}
+
 	public GeoPoint(double latGPS, double lngGPS) {
 		super();
 		this.latGPS = latGPS;

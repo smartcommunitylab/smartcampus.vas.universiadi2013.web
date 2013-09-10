@@ -1,4 +1,4 @@
-package eu.trentorise.smartcampus.universiadi.model.ContainerData;
+package eu.trentorise.smartcampus.universiadi.model.containerData;
 
 import java.util.ArrayList;
 
@@ -21,10 +21,12 @@ public class ContainerSport {
 		mListaSport.add(new SportObj("Sport 4", 4, "Descrizione Freestyle"));
 		mListaSport.add(new SportObj("Sport 5", 5, "Descrizione Ice"));
 		mListaSport.add(new SportObj("Sport 6", 6, "Descrizione Nordic"));
-		mListaSport.add(new SportObj("Sport 7", 7, "Descrizione Shorttracking"));
+		mListaSport
+				.add(new SportObj("Sport 7", 7, "Descrizione Shorttracking"));
 		mListaSport.add(new SportObj("Sport 8", 8, "Descrizione Ski Jumping"));
 		mListaSport.add(new SportObj("Sport 9", 9, "Descrizione Snowboarding"));
-		mListaSport.add(new SportObj("Sport 10", 10, "Descrizione SpeedSkating"));
+		mListaSport
+				.add(new SportObj("Sport 10", 10, "Descrizione SpeedSkating"));
 		mListaSport.add(new SportObj("Sport 11", 11, "Descrizione Biathlon"));
 
 		return mListaSport;

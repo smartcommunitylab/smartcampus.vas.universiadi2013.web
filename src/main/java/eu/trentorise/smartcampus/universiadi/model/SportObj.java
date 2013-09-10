@@ -1,15 +1,15 @@
 package eu.trentorise.smartcampus.universiadi.model;
 
 public class SportObj {
-	
+
 	private String nome;
 	private int foto;
 	private String descrizione;
-	
-	public SportObj(){
-		this(null,-1,null);
+
+	public SportObj() {
+		this(null, -1, null);
 	}
-	
+
 	public SportObj(String nome, int foto, String descrizione) {
 		super();
 		this.nome = nome;

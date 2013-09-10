@@ -1,29 +1,20 @@
 package eu.trentorise.smartcampus.universiadi.controller;
 
-import java.awt.Cursor;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.NavigableSet;
-import java.util.Set;
 import java.util.TreeMap;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.swing.text.html.HTMLDocument.Iterator;
 
-import org.apache.commons.httpclient.util.HttpURLConnection;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -31,13 +22,9 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.lobobrowser.html.renderer.RRelative;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -51,7 +38,6 @@ import com.mongodb.DBObject;
 import eu.trentorise.smartcampus.presentation.common.exception.DataException;
 import eu.trentorise.smartcampus.presentation.common.exception.NotFoundException;
 import eu.trentorise.smartcampus.universiadi.model.FAQObj;
-import eu.trentorise.smartcampus.universiadi.model.UserObj;
 
 @Controller("FaqController")
 public class FaqController {
@@ -285,7 +271,7 @@ public class FaqController {
 		domanda = domanda.replace("%3F", " ");
 		domanda = domanda.replace("?", " ");
 		domanda = domanda.replace("%3F=", " ");
-		domanda = domanda.replace("è", "�");
+		domanda = domanda.replace("è", "�");
 
 		String stringTempL;
 		String[] stringRichiesta = domanda.split(" ");
@@ -367,7 +353,7 @@ public class FaqController {
 		domanda = domanda.replace("%2C", " ");
 		domanda = domanda.replace(".", " ");
 		domanda = domanda.replace("%21", " ");
-		domanda = domanda.replace("è", "�");
+		domanda = domanda.replace("è", "�");
 
 		domanda = domanda.replace("  ", " ");
 		// domanda = domanda.replaceAll("\\s+$", "");

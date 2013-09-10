@@ -1,4 +1,4 @@
-package eu.trentorise.smartcampus.universiadi.model.ContainerData;
+package eu.trentorise.smartcampus.universiadi.model.containerData;
 
 import java.util.ArrayList;
 

@@ -6,12 +6,12 @@ public class TicketObj {
 	 * TicketObj: 1.GPS:double[] 2.Descrizione:String 3.Categoria:String
 	 * 4.Foto(link):String
 	 */
-	
+
 	private GeoPoint gps;
 	private String descrizione;
 	private String categoria;
 	private String foto;
-	
+
 	public TicketObj(GeoPoint gps, String descrizione, String categoria,
 			String foto) {
 		super();

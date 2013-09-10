@@ -18,11 +18,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import eu.trentorise.smartcampus.ac.provider.filters.AcProviderFilter;
 import eu.trentorise.smartcampus.presentation.common.exception.DataException;
 import eu.trentorise.smartcampus.presentation.common.exception.NotFoundException;
-import eu.trentorise.smartcampus.universiadi.model.AtletObj;
-import eu.trentorise.smartcampus.universiadi.model.EventObj;
 import eu.trentorise.smartcampus.universiadi.model.TicketObj;
 import eu.trentorise.smartcampus.universiadi.model.UserObj;
-import eu.trentorise.smartcampus.universiadi.model.ContainerData.ContainerUtenti;
+import eu.trentorise.smartcampus.universiadi.model.containerData.ContainerUtenti;
 
 @Controller("risolutoreController")
 public class RisolutoreController {

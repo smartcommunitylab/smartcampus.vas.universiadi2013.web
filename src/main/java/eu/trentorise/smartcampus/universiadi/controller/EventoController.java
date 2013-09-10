@@ -1,53 +1,22 @@
 package eu.trentorise.smartcampus.universiadi.controller;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Locale;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import eu.trentorise.smartcampus.universiadi.model.AtletObj;
-import eu.trentorise.smartcampus.universiadi.model.EventObj;
-import eu.trentorise.smartcampus.universiadi.model.MeetingObj;
-import eu.trentorise.smartcampus.universiadi.model.UserObj;
-import eu.trentorise.smartcampus.universiadi.model.ContainerData.ContainerEventi;
-import eu.trentorise.smartcampus.universiadi.model.ContainerData.ContainerMeeting;
-
-import java.awt.Event;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Locale;
-import java.util.Random;
-
-import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mongodb.BasicDBObject;
@@ -56,9 +25,13 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 
 import eu.trentorise.smartcampus.ac.provider.filters.AcProviderFilter;
-import eu.trentorise.smartcampus.journeyplanner.JourneyPlannerConnector;
 import eu.trentorise.smartcampus.presentation.common.exception.DataException;
 import eu.trentorise.smartcampus.presentation.common.exception.NotFoundException;
+import eu.trentorise.smartcampus.universiadi.model.AtletObj;
+import eu.trentorise.smartcampus.universiadi.model.EventObj;
+import eu.trentorise.smartcampus.universiadi.model.MeetingObj;
+import eu.trentorise.smartcampus.universiadi.model.containerData.ContainerEventi;
+import eu.trentorise.smartcampus.universiadi.model.containerData.ContainerMeeting;
 
 @Controller("eventoController")
 public class EventoController {
@@ -85,7 +58,7 @@ public class EventoController {
 			HttpSession session) {
 
 		String token = request.getHeader(AcProviderFilter.TOKEN_HEADER);
-		data = System.currentTimeMillis()+(3600*24*1000);
+		data = System.currentTimeMillis() + (3600 * 24 * 1000);
 		ArrayList<EventObj> mResult = new ArrayList<EventObj>();
 		for (EventObj obj : mListaEventi)
 			if (new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(
@@ -137,7 +110,16 @@ public class EventoController {
 			@RequestBody EventObj evento) throws DataException, IOException,
 			NotFoundException {
 		for (EventObj obj : mListaEventi)
-			if (new SimpleDateFormat("dd.MM.yyyy").format(obj.getData()).equalsIgnoreCase(new SimpleDateFormat("dd.MM.yyyy").format(evento.getData())) && obj.getDescrizione().equalsIgnoreCase(evento.getDescrizione()) && obj.getGps().compareTo(evento.getGps()) == 0 && obj.getNome().equalsIgnoreCase(evento.getNome()) && obj.getTipoSport().equalsIgnoreCase(evento.getTipoSport()))
+			if (new SimpleDateFormat("dd.MM.yyyy").format(obj.getData())
+					.equalsIgnoreCase(
+							new SimpleDateFormat("dd.MM.yyyy").format(evento
+									.getData()))
+					&& obj.getDescrizione().equalsIgnoreCase(
+							evento.getDescrizione())
+					&& obj.getGps().compareTo(evento.getGps()) == 0
+					&& obj.getNome().equalsIgnoreCase(evento.getNome())
+					&& obj.getTipoSport().equalsIgnoreCase(
+							evento.getTipoSport()))
 				return obj.getListaAtleti();
 		return null;
 	}

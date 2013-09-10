@@ -2,9 +2,6 @@ package eu.trentorise.smartcampus.universiadi.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -13,12 +10,7 @@ import javax.servlet.http.HttpSession;
 
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.MongoDbFactory;
-import org.springframework.data.mongodb.core.CollectionCallback;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,19 +18,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
-
 import eu.trentorise.smartcampus.ac.provider.filters.AcProviderFilter;
 import eu.trentorise.smartcampus.presentation.common.exception.DataException;
 import eu.trentorise.smartcampus.presentation.common.exception.NotFoundException;
-import eu.trentorise.smartcampus.universiadi.model.AtletObj;
-import eu.trentorise.smartcampus.universiadi.model.EventObj;
 import eu.trentorise.smartcampus.universiadi.model.TurnoObj;
 import eu.trentorise.smartcampus.universiadi.model.UserObj;
-import eu.trentorise.smartcampus.universiadi.model.ContainerData.ContainerUtenti;
+import eu.trentorise.smartcampus.universiadi.model.containerData.ContainerUtenti;
 
 @Controller("UserObjectController")
 public class UserObjectController {
@@ -98,21 +83,21 @@ public class UserObjectController {
 
 		return "token_anonymous";
 	}
-	
+
 	@RequestMapping(method = RequestMethod.GET, value = "/random_turn")
 	public @ResponseBody
 	TurnoObj getTurnoRandom(HttpServletRequest request,
 			HttpServletResponse response, HttpSession session) {
-			ArrayList<UserObj> listaUtenti = new ArrayList<UserObj>();
-			ArrayList<TurnoObj> listaTurni = new ArrayList<TurnoObj>();
-			listaUtenti = ContainerUtenti.getUtenti();
-			
-			for(UserObj user : listaUtenti){
-				
-				listaTurni = user.getListaTurni();
-				
-			}
-			
+		ArrayList<UserObj> listaUtenti = new ArrayList<UserObj>();
+		ArrayList<TurnoObj> listaTurni = new ArrayList<TurnoObj>();
+		listaUtenti = ContainerUtenti.getUtenti();
+
+		for (UserObj user : listaUtenti) {
+
+			listaTurni = user.getListaTurni();
+
+		}
+
 		return listaTurni.get(0);
 	}
 

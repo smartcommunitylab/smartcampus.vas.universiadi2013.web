@@ -22,7 +22,7 @@
 			<version>${ac-service-provider-api}</version>
 			<type>jar</type>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>eu.trentorise.smartcampus</groupId>
 			<artifactId>syncstorage.web</artifactId>
@@ -110,38 +110,38 @@
 			<artifactId>filestorage.client</artifactId>
 			<version>1.0</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>eu.trentorise.smartcampus</groupId>
 			<artifactId>journeyplanner.client</artifactId>
 			<version>1.0</version>
-		</dependency>	
-		
+		</dependency>
+
 		<dependency>
 			<groupId>eu.trentorise.smartcampus</groupId>
 			<artifactId>discovertrento.client</artifactId>
 			<version>1.0</version>
-		</dependency>		
-		
+		</dependency>
+
 		<dependency>
 			<groupId>eu.trentorise.smartcampus</groupId>
 			<artifactId>communicator.client</artifactId>
 			<version>2.0</version>
-		</dependency>	
-		
+		</dependency>
+
 		<dependency>
 			<groupId>eu.trentorise.smartcampus</groupId>
 			<artifactId>socialservice.client</artifactId>
 			<version>1.0</version>
-		</dependency>			
-		
-			<dependency>
+		</dependency>
+
+		<dependency>
 			<groupId>eu.trentorise.smartcampus</groupId>
 			<artifactId>smartcampus.vas.commons</artifactId>
 			<version>1.0</version>
 		</dependency>
-				
-		
+
+
 	</dependencies>
 
 	<build>
@@ -167,11 +167,11 @@
 
 		<finalName>smartcampus.vas.universiadi2013.web</finalName>
 	</build>
-    <repositories>
-        <repository>
-            <id>SmartCampus</id>
-            <url>http://repository.smartcampuslab.it/content/groups/public</url>
-        </repository>
-    </repositories>
+	<repositories>
+		<repository>
+			<id>SmartCampus</id>
+			<url>http://repository.smartcampuslab.it/content/groups/public</url>
+		</repository>
+	</repositories>
 
 </project>

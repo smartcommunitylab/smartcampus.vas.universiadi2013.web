@@ -6,18 +6,18 @@ public class TurnoObj {
 	 * 
 	 * TurnoObj: 1.Data:long 2.Luogo:String 4.OraInizio:long 5.OraFine:long
 	 */
-	
+
 	private long data;
 	private String luogo;
 	private String categoria;
 	private long oraInizio;
 	private long oraFine;
-	
-	public TurnoObj(){
-		
-		this(0,null,null,0,0);
+
+	public TurnoObj() {
+
+		this(0, null, null, 0, 0);
 	}
-	
+
 	public TurnoObj(long data, String luogo, String categoria, long oraInizio,
 			long oraFine) {
 		super();
@@ -66,5 +66,5 @@ public class TurnoObj {
 
 	public void setOraFine(long oraFine) {
 		this.oraFine = oraFine;
-	}	
+	}
 }

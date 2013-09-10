@@ -1,18 +1,5 @@
 package eu.trentorise.smartcampus.universiadi.model;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
-import java.util.ArrayList;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 public class MeetingObj {
 	/*
 	 * MeetingObj: 1.Nome:String 2.Ruolo:String 3.Ambito:String
@@ -26,7 +13,6 @@ public class MeetingObj {
 	private GeoPoint gps;
 	private long data;
 
-	
 	public MeetingObj(String nome, String ruolo, String ambito,
 			String descrizione, GeoPoint gps, long data) {
 		super();
@@ -37,7 +23,6 @@ public class MeetingObj {
 		this.gps = gps;
 		this.data = data;
 
-		
 	}
 
 	public String getNome() {
@@ -88,5 +73,4 @@ public class MeetingObj {
 		this.data = data;
 	}
 
-	
 }

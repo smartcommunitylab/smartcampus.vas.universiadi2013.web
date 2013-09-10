@@ -5,9 +5,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
-import eu.trentorise.smartcampus.universiadi.model.ContainerData.ContainerUtenti;
-
-public class UserObj implements Serializable{
+public class UserObj implements Serializable {
 
 	/*
 	 * UserObj: 1.Nome:String 2.Cognome:String 3.Ruolo:String 4.Ambito:String
@@ -26,12 +24,12 @@ public class UserObj implements Serializable{
 	private String user;
 	private String password;
 	private String numeroTelefonico;
-	
-	public UserObj(){
-		
-		this(null,null,null,null,new byte[1],null,null,null);
+
+	public UserObj() {
+
+		this(null, null, null, null, new byte[1], null, null, null);
 	}
-	
+
 	private String token = null;
 	private ArrayList<TurnoObj> listaTurni = new ArrayList<TurnoObj>();
 
@@ -146,6 +144,5 @@ public class UserObj implements Serializable{
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-	
-	
+
 }

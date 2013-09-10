@@ -21,7 +21,7 @@ import eu.trentorise.smartcampus.presentation.common.exception.NotFoundException
 import eu.trentorise.smartcampus.universiadi.model.EventObj;
 import eu.trentorise.smartcampus.universiadi.model.GeoPoint;
 import eu.trentorise.smartcampus.universiadi.model.POIObj;
-import eu.trentorise.smartcampus.universiadi.model.ContainerData.ContainerPOI;
+import eu.trentorise.smartcampus.universiadi.model.containerData.ContainerPOI;
 
 @Controller("poiController")
 public class POIController {
@@ -40,7 +40,7 @@ public class POIController {
 			HttpSession session) {
 
 		String token = request.getHeader(AcProviderFilter.TOKEN_HEADER);
-		
+
 		ArrayList<POIObj> mResult = new ArrayList<POIObj>();
 		for (POIObj obj : mListaPOI)
 			if (obj.getCategoria().equalsIgnoreCase(type))
@@ -55,7 +55,7 @@ public class POIController {
 			HttpServletResponse response, HttpSession session,
 			@RequestBody GeoPoint poi) throws DataException, IOException,
 			NotFoundException {
-			
+
 		for (POIObj obj : mListaPOI) {
 			if (obj.getGPS().compareTo(poi) == 0)
 				return obj.getEvento();

@@ -3,20 +3,21 @@ package eu.trentorise.smartcampus.universiadi.model;
 public class AtletObj {
 
 	/*
-	 * AtletObj: 1.Nome:String 2.Cognome:String 3.Nazionalitˆ:String
+	 * AtletObj: 1.Nome:String 2.Cognome:String 3.Nazionalitï¿½:String
 	 * 4.Disciplina:String 5.Foto:byte[]
 	 */
-	
+
 	private String nome;
 	private String cognome;
 	private String nazionalita;
 	private String disciplina;
 	private byte[] foto;
-	
-	public AtletObj(){
-		
-		this(null,null,null,null,new byte[1]);
+
+	public AtletObj() {
+
+		this(null, null, null, null, new byte[1]);
 	}
+
 	public AtletObj(String nome, String cognome, String nazionalita,
 			String disciplina, byte[] foto) {
 		super();
@@ -66,5 +67,5 @@ public class AtletObj {
 	public void setFoto(byte[] foto) {
 		this.foto = foto;
 	}
-	
+
 }
