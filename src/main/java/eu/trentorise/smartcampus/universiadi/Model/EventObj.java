@@ -1,4 +1,4 @@
-package eu.trentorise.smartcampus.universiadi.Model;
+package eu.trentorise.smartcampus.universiadi.model;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -27,8 +27,15 @@ public class EventObj implements Serializable {
 	private GeoPoint gps;
 	private String tipoSport;
 
+	
+	
 	private ArrayList<AtletObj> listaAtleti = null;
-
+	
+	public EventObj(){
+		
+		this(null, 0, null, null, null);
+		
+	}
 	public EventObj(String nome, long data, String descrizione, GeoPoint gps,
 			String tipoSport) {
 		super();
@@ -37,6 +44,8 @@ public class EventObj implements Serializable {
 		this.descrizione = descrizione;
 		this.gps = gps;
 		this.tipoSport = tipoSport;
+
+		
 
 		listaAtleti = new ArrayList<AtletObj>();
 		for (int i = 0; i < 6; i++)
@@ -76,6 +85,7 @@ public class EventObj implements Serializable {
 		this.gps = gps;
 	}
 
+
 	public String getTipoSport() {
 		return tipoSport;
 	}
@@ -84,10 +94,12 @@ public class EventObj implements Serializable {
 		this.tipoSport = tipoSport;
 	}
 
+	
 	public ArrayList<AtletObj> getListaAtleti() {
 		return listaAtleti;
 	}
 
+	
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}

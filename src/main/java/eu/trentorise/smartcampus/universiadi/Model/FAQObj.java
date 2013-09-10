@@ -1,14 +1,9 @@
-package eu.trentorise.smartcampus.universiadi.Model;
+package eu.trentorise.smartcampus.universiadi.model;
 
-import java.io.Serializable;
 import java.util.List;
 
-public class FAQObj implements Serializable{
+public class FAQObj {
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 7124599858768759095L;
 	private int id;
 	private String domanda;
 	private String risposta;

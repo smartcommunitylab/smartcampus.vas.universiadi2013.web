@@ -1,10 +1,10 @@
-package eu.trentorise.smartcampus.universiadi.Model.ContainerData;
+package eu.trentorise.smartcampus.universiadi.model.ContainerData;
 
 import java.util.ArrayList;
 
-import eu.trentorise.smartcampus.universiadi.Model.EventObj;
-import eu.trentorise.smartcampus.universiadi.Model.GeoPoint;
-import eu.trentorise.smartcampus.universiadi.Model.POIObj;
+import eu.trentorise.smartcampus.universiadi.model.EventObj;
+import eu.trentorise.smartcampus.universiadi.model.GeoPoint;
+import eu.trentorise.smartcampus.universiadi.model.POIObj;
 
 public class ContainerPOI {
 	private static ArrayList<POIObj> mListaPOI = null;

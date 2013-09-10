@@ -1,4 +1,4 @@
-package eu.trentorise.smartcampus.universiadi.Controller;
+package eu.trentorise.smartcampus.universiadi.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,10 +34,13 @@ import com.mongodb.DBObject;
 import eu.trentorise.smartcampus.ac.provider.filters.AcProviderFilter;
 import eu.trentorise.smartcampus.presentation.common.exception.DataException;
 import eu.trentorise.smartcampus.presentation.common.exception.NotFoundException;
-import eu.trentorise.smartcampus.universiadi.Model.UserObj;
-import eu.trentorise.smartcampus.universiadi.Model.ContainerData.ContainerUtenti;
+import eu.trentorise.smartcampus.universiadi.model.AtletObj;
+import eu.trentorise.smartcampus.universiadi.model.EventObj;
+import eu.trentorise.smartcampus.universiadi.model.TurnoObj;
+import eu.trentorise.smartcampus.universiadi.model.UserObj;
+import eu.trentorise.smartcampus.universiadi.model.ContainerData.ContainerUtenti;
 
-@Controller("userObjectController")
+@Controller("UserObjectController")
 public class UserObjectController {
 
 	@Autowired(required = false)
@@ -62,9 +65,13 @@ public class UserObjectController {
 		for (UserObj utente : mListaUtenti)
 			if (utente.getUser().equalsIgnoreCase(user)
 					&& utente.getPassword().equalsIgnoreCase(password)) {
-				String token = "token" + ID;
-				utente.setToken(token);
-				ID++;
+				String token = "aee58a92-d42d-42e8-b55e-12e4289586fc";
+				UserObj newUser = new UserObj(utente.getNome(),
+						utente.getCognome(), utente.getAmbito(),
+						utente.getRuolo(), utente.getFoto(), utente.getUser(),
+						utente.getPassword(), utente.getNumeroTelefonico());
+				newUser.setToken(token);
+				ContainerUtenti.replaceUtente(utente, newUser);
 				return token;
 			}
 		return null;
@@ -78,7 +85,8 @@ public class UserObjectController {
 		String token = request.getHeader(AcProviderFilter.TOKEN_HEADER);
 		ArrayList<UserObj> mListaUtenti = ContainerUtenti.getUtenti();
 		for (UserObj utente : mListaUtenti)
-			if (utente.getToken().equalsIgnoreCase(token))
+			if (utente.getToken() != null
+					&& utente.getToken().equalsIgnoreCase(token))
 				return utente;
 		return null;
 	}
@@ -90,18 +98,74 @@ public class UserObjectController {
 
 		return "token_anonymous";
 	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/random_turn")
+	public @ResponseBody
+	TurnoObj getTurnoRandom(HttpServletRequest request,
+			HttpServletResponse response, HttpSession session) {
+			ArrayList<UserObj> listaUtenti = new ArrayList<UserObj>();
+			ArrayList<TurnoObj> listaTurni = new ArrayList<TurnoObj>();
+			listaUtenti = ContainerUtenti.getUtenti();
+			
+			for(UserObj user : listaUtenti){
+				
+				listaTurni = user.getListaTurni();
+				
+			}
+			
+		return listaTurni.get(0);
+	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/invalidate")
 	public @ResponseBody
-	UserObj invalidateToken(HttpServletRequest request,
+	boolean invalidateToken(HttpServletRequest request,
 			HttpServletResponse response, HttpSession session) {
 
 		String token = request.getHeader(AcProviderFilter.TOKEN_HEADER);
 		ArrayList<UserObj> mListaUtenti = ContainerUtenti.getUtenti();
 		for (UserObj utente : mListaUtenti)
-			if (utente.getToken().equalsIgnoreCase(token))
-				utente.setToken(null);
-		return null;
+			if (utente.getToken() != null
+					&& utente.getToken().equalsIgnoreCase(token)) {
+				UserObj newUser = new UserObj(utente.getNome(),
+						utente.getCognome(), utente.getAmbito(),
+						utente.getRuolo(), utente.getFoto(), utente.getUser(),
+						utente.getPassword(), utente.getNumeroTelefonico());
+				newUser.setToken(null);
+				ContainerUtenti.replaceUtente(utente, newUser);
+				return true;
+			}
+		return false;
+	}
+
+	@RequestMapping(method = RequestMethod.POST, value = "/users_for_turn")
+	public @ResponseBody
+	ArrayList<UserObj> getAtletiForEvento(HttpServletRequest request,
+			HttpServletResponse response, HttpSession session,
+			@RequestBody TurnoObj turno) throws DataException, IOException,
+			NotFoundException {
+		ArrayList<UserObj> listaUtenti = new ArrayList<UserObj>();
+		ArrayList<UserObj> listaUtentiMatch = new ArrayList<UserObj>();
+		listaUtenti = ContainerUtenti.getUtenti();
+
+		for (UserObj utente : listaUtenti) {
+			ArrayList<TurnoObj> listaTurniUtente = new ArrayList<TurnoObj>();
+			listaTurniUtente = utente.getListaTurni();
+			for (TurnoObj turnoSingoloUtente : listaTurniUtente) {
+				if (turnoSingoloUtente.getData() == turno.getData()
+						&& turnoSingoloUtente.getLuogo().equalsIgnoreCase(
+								turno.getLuogo())
+						&& turnoSingoloUtente.getCategoria().equalsIgnoreCase(
+								turno.getCategoria())
+						&& turnoSingoloUtente.getOraInizio() == turno
+								.getOraInizio()
+						&& turnoSingoloUtente.getOraFine() == turno
+								.getOraFine()) {
+					listaUtentiMatch.add(utente);
+				}
+			}
+		}
+
+		return listaUtentiMatch;
 	}
 
 }

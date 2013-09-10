@@ -1,13 +1,7 @@
-package eu.trentorise.smartcampus.universiadi.Model;
+package eu.trentorise.smartcampus.universiadi.model;
 
-import java.io.Serializable;
+public class TurnoObj {
 
-public class TurnoObj implements Serializable{
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -2963916580809389760L;
 	/*
 	 * 
 	 * TurnoObj: 1.Data:long 2.Luogo:String 4.OraInizio:long 5.OraFine:long
@@ -15,18 +9,23 @@ public class TurnoObj implements Serializable{
 	
 	private long data;
 	private String luogo;
+	private String categoria;
 	private long oraInizio;
 	private long oraFine;
-	private UserObj volontario;
 	
-	public TurnoObj(long data, String luogo, long oraInizio, long oraFine,
-			UserObj volontario) {
+	public TurnoObj(){
+		
+		this(0,null,null,0,0);
+	}
+	
+	public TurnoObj(long data, String luogo, String categoria, long oraInizio,
+			long oraFine) {
 		super();
 		this.data = data;
 		this.luogo = luogo;
+		this.categoria = categoria;
 		this.oraInizio = oraInizio;
 		this.oraFine = oraFine;
-		this.volontario = volontario;
 	}
 
 	public long getData() {
@@ -45,6 +44,14 @@ public class TurnoObj implements Serializable{
 		this.luogo = luogo;
 	}
 
+	public String getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(String categoria) {
+		this.categoria = categoria;
+	}
+
 	public long getOraInizio() {
 		return oraInizio;
 	}
@@ -59,13 +66,5 @@ public class TurnoObj implements Serializable{
 
 	public void setOraFine(long oraFine) {
 		this.oraFine = oraFine;
-	}
-
-	public UserObj getVolontario() {
-		return volontario;
-	}
-
-	public void setVolontario(UserObj volontario) {
-		this.volontario = volontario;
 	}	
 }

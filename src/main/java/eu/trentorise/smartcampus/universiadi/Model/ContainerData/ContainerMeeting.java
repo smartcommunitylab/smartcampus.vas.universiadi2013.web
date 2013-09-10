@@ -1,12 +1,12 @@
-package eu.trentorise.smartcampus.universiadi.Model.ContainerData;
+package eu.trentorise.smartcampus.universiadi.model.ContainerData;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
-import eu.trentorise.smartcampus.universiadi.Model.EventObj;
-import eu.trentorise.smartcampus.universiadi.Model.GeoPoint;
-import eu.trentorise.smartcampus.universiadi.Model.MeetingObj;
+import eu.trentorise.smartcampus.universiadi.model.EventObj;
+import eu.trentorise.smartcampus.universiadi.model.GeoPoint;
+import eu.trentorise.smartcampus.universiadi.model.MeetingObj;
 
 public class ContainerMeeting {
 

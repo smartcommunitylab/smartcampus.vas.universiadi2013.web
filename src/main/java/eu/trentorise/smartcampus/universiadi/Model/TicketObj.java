@@ -1,13 +1,7 @@
-package eu.trentorise.smartcampus.universiadi.Model;
+package eu.trentorise.smartcampus.universiadi.model;
 
-import java.io.Serializable;
+public class TicketObj {
 
-public class TicketObj implements Serializable{
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -4914273668360377744L;
 	/*
 	 * TicketObj: 1.GPS:double[] 2.Descrizione:String 3.Categoria:String
 	 * 4.Foto(link):String

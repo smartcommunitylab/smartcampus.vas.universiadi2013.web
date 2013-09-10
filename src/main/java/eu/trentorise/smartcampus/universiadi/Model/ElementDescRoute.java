@@ -1,12 +1,6 @@
-package eu.trentorise.smartcampus.universiadi.Model;
+package eu.trentorise.smartcampus.universiadi.model;
 
-import java.io.Serializable;
-
-public class ElementDescRoute implements Serializable{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 4799141629010652551L;
+public class ElementDescRoute {
 	private String distance;
 	private String duration;
 	private String description;

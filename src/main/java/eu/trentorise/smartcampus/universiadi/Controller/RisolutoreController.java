@@ -1,4 +1,4 @@
-package eu.trentorise.smartcampus.universiadi.Controller;
+package eu.trentorise.smartcampus.universiadi.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,12 +18,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import eu.trentorise.smartcampus.ac.provider.filters.AcProviderFilter;
 import eu.trentorise.smartcampus.presentation.common.exception.DataException;
 import eu.trentorise.smartcampus.presentation.common.exception.NotFoundException;
-import eu.trentorise.smartcampus.universiadi.Model.AtletObj;
-import eu.trentorise.smartcampus.universiadi.Model.EventObj;
-import eu.trentorise.smartcampus.universiadi.Model.TicketObj;
-import eu.trentorise.smartcampus.universiadi.Model.UserObj;
-import eu.trentorise.smartcampus.universiadi.Model.ContainerData.ContainerUtenti;
+import eu.trentorise.smartcampus.universiadi.model.AtletObj;
+import eu.trentorise.smartcampus.universiadi.model.EventObj;
+import eu.trentorise.smartcampus.universiadi.model.TicketObj;
+import eu.trentorise.smartcampus.universiadi.model.UserObj;
+import eu.trentorise.smartcampus.universiadi.model.ContainerData.ContainerUtenti;
 
+@Controller("risolutoreController")
 public class RisolutoreController {
 
 	@PostConstruct

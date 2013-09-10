@@ -1,13 +1,7 @@
-package eu.trentorise.smartcampus.universiadi.Model;
+package eu.trentorise.smartcampus.universiadi.model;
 
-import java.io.Serializable;
+public class AtletObj {
 
-public class AtletObj implements Serializable{
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 5081249266644253939L;
 	/*
 	 * AtletObj: 1.Nome:String 2.Cognome:String 3.Nazionalitˆ:String
 	 * 4.Disciplina:String 5.Foto:byte[]
@@ -19,6 +13,10 @@ public class AtletObj implements Serializable{
 	private String disciplina;
 	private byte[] foto;
 	
+	public AtletObj(){
+		
+		this(null,null,null,null,new byte[1]);
+	}
 	public AtletObj(String nome, String cognome, String nazionalita,
 			String disciplina, byte[] foto) {
 		super();

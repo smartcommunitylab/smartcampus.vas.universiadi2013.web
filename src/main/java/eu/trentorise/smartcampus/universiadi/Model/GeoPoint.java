@@ -1,16 +1,13 @@
-package eu.trentorise.smartcampus.universiadi.Model;
+package eu.trentorise.smartcampus.universiadi.model;
 
-import java.io.Serializable;
+public class GeoPoint implements Comparable<GeoPoint> {
 
-public class GeoPoint implements Comparable<GeoPoint>, Serializable{
+	public double latGPS;
+	public double lngGPS;
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 617387333951647681L;
-	private double latGPS;
-	private double lngGPS;
-
+	public GeoPoint(){
+		this(0,0);
+	}
 	public GeoPoint(double latGPS, double lngGPS) {
 		super();
 		this.latGPS = latGPS;

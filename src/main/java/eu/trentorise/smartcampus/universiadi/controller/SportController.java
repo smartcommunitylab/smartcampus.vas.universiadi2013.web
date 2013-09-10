@@ -21,46 +21,32 @@ import eu.trentorise.smartcampus.presentation.common.exception.NotFoundException
 import eu.trentorise.smartcampus.universiadi.model.EventObj;
 import eu.trentorise.smartcampus.universiadi.model.GeoPoint;
 import eu.trentorise.smartcampus.universiadi.model.POIObj;
+import eu.trentorise.smartcampus.universiadi.model.SportObj;
 import eu.trentorise.smartcampus.universiadi.model.ContainerData.ContainerPOI;
+import eu.trentorise.smartcampus.universiadi.model.ContainerData.ContainerSport;
 
-@Controller("poiController")
-public class POIController {
+@Controller("sportController")
+public class SportController {
 
-	private ArrayList<POIObj> mListaPOI;
 
-	@PostConstruct
-	public void init() {
-		mListaPOI = ContainerPOI.getPOI();
-	}
+		ArrayList<SportObj> mListaAllSport = new ArrayList<SportObj>();
 
-	@RequestMapping(method = RequestMethod.GET, value = "/poi/{type}")
-	public @ResponseBody
-	ArrayList<POIObj> getPoiForType(HttpServletRequest request,
-			@PathVariable("type") String type, HttpServletResponse response,
-			HttpSession session) {
-
-		String token = request.getHeader(AcProviderFilter.TOKEN_HEADER);
-		
-		ArrayList<POIObj> mResult = new ArrayList<POIObj>();
-		for (POIObj obj : mListaPOI)
-			if (obj.getCategoria().equalsIgnoreCase(type))
-				mResult.add(obj);
-
-		return mResult;
-	}
-
-	@RequestMapping(method = RequestMethod.POST, value = "/poi_evento")
-	public @ResponseBody
-	ArrayList<EventObj> getAtletiForEvento(HttpServletRequest request,
-			HttpServletResponse response, HttpSession session,
-			@RequestBody GeoPoint poi) throws DataException, IOException,
-			NotFoundException {
-			
-		for (POIObj obj : mListaPOI) {
-			if (obj.getGPS().compareTo(poi) == 0)
-				return obj.getEvento();
+		@PostConstruct
+		public void init() {
+			mListaAllSport = ContainerSport.getSport();
 		}
-		return null;
-	}
 
-}
+		@RequestMapping(method = RequestMethod.GET, value = "/sport")
+		public @ResponseBody
+		ArrayList<SportObj> getAllSport(HttpServletRequest request,
+				HttpServletResponse response,
+				HttpSession session) {
+
+			
+
+			return mListaAllSport;
+		}
+
+	
+
+	}

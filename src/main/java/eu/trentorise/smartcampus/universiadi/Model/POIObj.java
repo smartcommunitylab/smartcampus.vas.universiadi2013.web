@@ -1,4 +1,4 @@
-package eu.trentorise.smartcampus.universiadi.Model;
+package eu.trentorise.smartcampus.universiadi.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;

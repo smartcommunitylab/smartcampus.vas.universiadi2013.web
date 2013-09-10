@@ -28,7 +28,6 @@
 	</bean>
 	
 	
-	
 	<mongo:mongo host="${smartcampus.vas.web.mongo.host}" port="${smartcampus.vas.web.mongo.port}" />
 
 
