@@ -289,7 +289,8 @@ public class EventoController {
 			HttpSession session) throws TerritoryServiceException {
 		ObjectFilter filter = new ObjectFilter();
 		filter.setLimit(10);
-		filter.setTypes(Arrays.asList(new String[]{"Universiadi"}));
+	
+		filter.setTypes(Arrays.asList(new String[]{"universiadi13"}));
 		filter.setText("party");
 		filter.setFromTime(System.currentTimeMillis());
 		List<EventObject> events = territoryService.getEvents(filter, "token");
