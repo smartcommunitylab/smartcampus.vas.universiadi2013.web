@@ -3,6 +3,8 @@ package eu.trentorise.smartcampus.universiadi.controller;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 
 import javax.annotation.PostConstruct;
@@ -27,6 +29,10 @@ import com.mongodb.DBObject;
 import eu.trentorise.smartcampus.ac.provider.filters.AcProviderFilter;
 import eu.trentorise.smartcampus.presentation.common.exception.DataException;
 import eu.trentorise.smartcampus.presentation.common.exception.NotFoundException;
+import eu.trentorise.smartcampus.territoryservice.TerritoryService;
+import eu.trentorise.smartcampus.territoryservice.TerritoryServiceException;
+import eu.trentorise.smartcampus.territoryservice.model.EventObject;
+import eu.trentorise.smartcampus.territoryservice.model.ObjectFilter;
 import eu.trentorise.smartcampus.universiadi.model.AtletObj;
 import eu.trentorise.smartcampus.universiadi.model.EventObj;
 import eu.trentorise.smartcampus.universiadi.model.MeetingObj;
@@ -44,6 +50,9 @@ public class EventoController {
 	// private UserObject us2 = new UserObject();
 	private ArrayList<EventObj> mListaEventi;
 	private ArrayList<MeetingObj> mListaMeeting;
+	
+	private TerritoryService territoryService = new TerritoryService(
+			"https://vas-dev.smartcampuslab.it/core.territory");
 
 	@PostConstruct
 	public void init() {
@@ -272,6 +281,21 @@ public class EventoController {
 		}
 
 		return evappl;
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/evento/all")
+	public @ResponseBody
+	List<EventObject> getEventiAll(HttpServletRequest request,HttpServletResponse response,
+			HttpSession session) throws TerritoryServiceException {
+		ObjectFilter filter = new ObjectFilter();
+		filter.setLimit(10);
+		filter.setTypes(Arrays.asList(new String[]{"Universiadi"}));
+		filter.setText("party");
+		filter.setFromTime(System.currentTimeMillis());
+		List<EventObject> events = territoryService.getEvents(filter, "token");
+	
+
+		return events;
 	}
 
 }
