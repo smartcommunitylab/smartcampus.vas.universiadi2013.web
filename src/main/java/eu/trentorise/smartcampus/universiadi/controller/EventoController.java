@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,6 +42,10 @@ import eu.trentorise.smartcampus.universiadi.model.containerData.ContainerMeetin
 
 @Controller("eventoController")
 public class EventoController {
+	
+	@Autowired
+	@Value("${territory.address}")
+	private String territoryAddress;
 
 	@Autowired
 	MongoTemplate db;
@@ -51,8 +56,7 @@ public class EventoController {
 	private ArrayList<EventObj> mListaEventi;
 	private ArrayList<MeetingObj> mListaMeeting;
 	
-	private TerritoryService territoryService = new TerritoryService(
-			"https://vas-dev.smartcampuslab.it/core.territory");
+	private TerritoryService territoryService = new TerritoryService(territoryAddress);
 
 	@PostConstruct
 	public void init() {
