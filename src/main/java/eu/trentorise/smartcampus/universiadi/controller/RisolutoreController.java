@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import eu.trentorise.smartcampus.ac.provider.filters.AcProviderFilter;
 import eu.trentorise.smartcampus.presentation.common.exception.DataException;
 import eu.trentorise.smartcampus.presentation.common.exception.NotFoundException;
 import eu.trentorise.smartcampus.universiadi.model.TicketObj;
@@ -34,7 +33,7 @@ public class RisolutoreController {
 	ArrayList<String> getCategorieVolontari(HttpServletRequest request,
 			HttpServletResponse response, HttpSession session) {
 
-		String token = request.getHeader(AcProviderFilter.TOKEN_HEADER);
+		
 
 		ArrayList<String> mCategorie = new ArrayList<String>();
 		for (UserObj utente : ContainerUtenti.getUtenti())
@@ -51,7 +50,7 @@ public class RisolutoreController {
 			@PathVariable("ruolo") String ruolo, HttpServletResponse response,
 			HttpSession session) {
 
-		String token = request.getHeader(AcProviderFilter.TOKEN_HEADER);
+		
 
 		return ContainerUtenti.getUtentiForAmbitoAndRuolo(ambito, ruolo);
 	}

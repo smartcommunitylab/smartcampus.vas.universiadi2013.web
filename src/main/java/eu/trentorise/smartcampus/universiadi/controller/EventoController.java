@@ -27,7 +27,6 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 
-import eu.trentorise.smartcampus.ac.provider.filters.AcProviderFilter;
 import eu.trentorise.smartcampus.presentation.common.exception.DataException;
 import eu.trentorise.smartcampus.presentation.common.exception.NotFoundException;
 import eu.trentorise.smartcampus.territoryservice.TerritoryService;
@@ -39,6 +38,7 @@ import eu.trentorise.smartcampus.universiadi.model.EventObj;
 import eu.trentorise.smartcampus.universiadi.model.MeetingObj;
 import eu.trentorise.smartcampus.universiadi.model.containerData.ContainerEventi;
 import eu.trentorise.smartcampus.universiadi.model.containerData.ContainerMeeting;
+import eu.trentorise.smartcampus.universiadi.util.EasyTokenManger;
 
 @Controller("eventoController")
 public class EventoController {
@@ -49,14 +49,11 @@ public class EventoController {
 
 	@Autowired
 	MongoTemplate db;
-	// private List<Evento> yep = new ArrayList<Evento>();
-	// private List<UserObject> ulist = new ArrayList<UserObject>();
-	// private UserObject us1 = new UserObject();
-	// private UserObject us2 = new UserObject();
+	
 	private ArrayList<EventObj> mListaEventi;
 	private ArrayList<MeetingObj> mListaMeeting;
 	
-	private TerritoryService territoryService = new TerritoryService(territoryAddress);
+	
 
 	@PostConstruct
 	public void init() {
@@ -70,7 +67,7 @@ public class EventoController {
 			@PathVariable("data") long data, HttpServletResponse response,
 			HttpSession session) {
 
-		String token = request.getHeader(AcProviderFilter.TOKEN_HEADER);
+	
 		data = System.currentTimeMillis() + (3600 * 24 * 1000);
 		ArrayList<EventObj> mResult = new ArrayList<EventObj>();
 		for (EventObj obj : mListaEventi)
@@ -89,7 +86,7 @@ public class EventoController {
 			@PathVariable("sport") String sport, HttpServletResponse response,
 			HttpSession session) {
 
-		String token = request.getHeader(AcProviderFilter.TOKEN_HEADER);
+	
 		ArrayList<EventObj> mResult = new ArrayList<EventObj>();
 		for (EventObj obj : mListaEventi)
 			if (obj.getTipoSport().equalsIgnoreCase(sport))
@@ -104,7 +101,7 @@ public class EventoController {
 			@PathVariable("date") long date, HttpServletResponse response,
 			HttpSession session) {
 
-		String token = request.getHeader(AcProviderFilter.TOKEN_HEADER);
+	
 		ArrayList<MeetingObj> mResult = new ArrayList<MeetingObj>();
 		for (MeetingObj obj : mListaMeeting)
 			if (new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(
@@ -293,11 +290,13 @@ public class EventoController {
 			HttpSession session) throws TerritoryServiceException {
 		ObjectFilter filter = new ObjectFilter();
 		filter.setLimit(10);
+		
+		TerritoryService territoryService = new TerritoryService(territoryAddress);
 	
 		filter.setTypes(Arrays.asList(new String[]{"universiadi13"}));
 		filter.setText("party");
 		filter.setFromTime(System.currentTimeMillis());
-		List<EventObject> events = territoryService.getEvents(filter, "token");
+		List<EventObject> events = territoryService.getEvents(filter, EasyTokenManger.getEasyTokenManger().getAuthToken());
 	
 
 		return events;

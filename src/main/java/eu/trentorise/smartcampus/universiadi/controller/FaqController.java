@@ -76,7 +76,7 @@ public class FaqController {
 		String jsonStringSinonimi = httpGet(compositeUrlString);
 		String[] arrSinonimi = null;
 
-		ArrayList<String> listaSinonimi = new ArrayList<String>();
+	
 
 		if (!jsonStringSinonimi.contains("error")) {
 			jBig = new JSONObject(jsonStringSinonimi);
@@ -97,7 +97,7 @@ public class FaqController {
 
 	public ArrayList<ExtendedAnswer> getAnswerFromTag(MongoTemplate db,
 			ArrayList<String> tagList) {
-		ArrayList<ExtendedAnswer> mResult = new ArrayList<ExtendedAnswer>();
+		
 		Map<Integer, Integer> mapID = new HashMap<Integer, Integer>();
 
 		for (String tag : tagList) {

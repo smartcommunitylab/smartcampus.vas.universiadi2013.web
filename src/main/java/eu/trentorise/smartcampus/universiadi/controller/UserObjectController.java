@@ -31,8 +31,6 @@ public class UserObjectController {
 	@Autowired(required = false)
 	MongoTemplate db;
 
-	private static int ID = 0;
-
 	@PostConstruct
 	public void init() {
 
@@ -66,8 +64,8 @@ public class UserObjectController {
 	public @ResponseBody
 	UserObj getUserData(HttpServletRequest request,
 			HttpServletResponse response, HttpSession session) {
-
 		String token = request.getHeader(AcProviderFilter.TOKEN_HEADER);
+		
 		ArrayList<UserObj> mListaUtenti = ContainerUtenti.getUtenti();
 		for (UserObj utente : mListaUtenti)
 			if (utente.getToken() != null
@@ -105,8 +103,8 @@ public class UserObjectController {
 	public @ResponseBody
 	boolean invalidateToken(HttpServletRequest request,
 			HttpServletResponse response, HttpSession session) {
-
 		String token = request.getHeader(AcProviderFilter.TOKEN_HEADER);
+		
 		ArrayList<UserObj> mListaUtenti = ContainerUtenti.getUtenti();
 		for (UserObj utente : mListaUtenti)
 			if (utente.getToken() != null

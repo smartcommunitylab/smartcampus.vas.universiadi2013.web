@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import eu.trentorise.smartcampus.ac.provider.filters.AcProviderFilter;
 import eu.trentorise.smartcampus.presentation.common.exception.DataException;
 import eu.trentorise.smartcampus.presentation.common.exception.NotFoundException;
 import eu.trentorise.smartcampus.territoryservice.TerritoryService;
@@ -28,13 +29,16 @@ import eu.trentorise.smartcampus.universiadi.model.EventObj;
 import eu.trentorise.smartcampus.universiadi.model.GeoPoint;
 import eu.trentorise.smartcampus.universiadi.model.POIObj;
 import eu.trentorise.smartcampus.universiadi.model.containerData.ContainerPOI;
+import eu.trentorise.smartcampus.universiadi.util.EasyTokenManger;
 
 @Controller("poiController")
 public class POIController {
 
+	@Autowired
+	@Value("${territory.address}")
+	private String territoryAddress;
 	
-	private TerritoryService territoryService = new TerritoryService(
-			"https://vas-dev.smartcampuslab.it/core.territory");
+
 	private ArrayList<POIObj> mListaPOI;
 
 	@PostConstruct
@@ -48,7 +52,7 @@ public class POIController {
 			@PathVariable("type") String type, HttpServletResponse response,
 			HttpSession session) {
 
-		String token = request.getHeader(AcProviderFilter.TOKEN_HEADER);
+		
 
 		ArrayList<POIObj> mResult = new ArrayList<POIObj>();
 		for (POIObj obj : mListaPOI)
@@ -78,9 +82,12 @@ public class POIController {
 			HttpServletResponse response, HttpSession session,
 			@RequestBody GeoPoint poi) throws DataException, IOException,
 			NotFoundException, TerritoryServiceException {
+		
+		
+		TerritoryService territoryService = new TerritoryService(territoryAddress);
 		ObjectFilter filter = new ObjectFilter();
 		filter.setTypes(Arrays.asList(new String[]{"universiadi13 - Venues"}));
-		List<POIObject> pois = territoryService.getPOIs(filter ,"token");
+		List<POIObject> pois = territoryService.getPOIs(filter ,EasyTokenManger.getEasyTokenManger().getAuthToken());
 		return pois;
 	}
 

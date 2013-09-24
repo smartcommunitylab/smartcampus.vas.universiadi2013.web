@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import eu.trentorise.smartcampus.ac.provider.filters.AcProviderFilter;
 import eu.trentorise.smartcampus.universiadi.model.TurnoObj;
 import eu.trentorise.smartcampus.universiadi.model.UserObj;
 import eu.trentorise.smartcampus.universiadi.model.containerData.ContainerUtenti;
@@ -30,8 +29,7 @@ public class CalendarioController {
 			@PathVariable("categoria") String categoria,
 			HttpServletResponse response, HttpSession session) {
 
-		String token = request.getHeader(AcProviderFilter.TOKEN_HEADER);
-
+		
 		ArrayList<UserObj> mListaUtenti = ContainerUtenti
 				.getUtentiForAmbitoAndRuolo(
 						(categoria.equalsIgnoreCase("\"\"")) ? null : categoria,
