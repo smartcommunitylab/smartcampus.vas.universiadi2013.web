@@ -27,6 +27,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 
+import eu.trentorise.smartcampus.aac.AACException;
 import eu.trentorise.smartcampus.presentation.common.exception.DataException;
 import eu.trentorise.smartcampus.presentation.common.exception.NotFoundException;
 import eu.trentorise.smartcampus.territoryservice.TerritoryService;
@@ -46,6 +47,26 @@ public class EventoController {
 	@Autowired
 	@Value("${territory.address}")
 	private String territoryAddress;
+	
+	@Autowired
+	@Value("${clientidsc}")
+	private String client_sc_Id;
+
+	@Autowired
+	@Value("${clientscsecrect}")
+	private String client_sc_secret;
+	
+	@Autowired
+	@Value("${fix.juniper.token}")
+	private String client_juniper_token;
+	
+	@Autowired
+	@Value("${profile.address}")
+	private String profileAddress;
+	
+	@Autowired
+	@Value("${auth_token}")
+	private String authToken;
 
 	@Autowired
 	MongoTemplate db;
@@ -53,12 +74,15 @@ public class EventoController {
 	private ArrayList<EventObj> mListaEventi;
 	private ArrayList<MeetingObj> mListaMeeting;
 	
-	
+	private EasyTokenManger easyTokenManger;
 
 	@PostConstruct
 	public void init() {
 		mListaEventi = ContainerEventi.getEventi();
 		mListaMeeting = ContainerMeeting.getMeeting();
+		
+		easyTokenManger=new EasyTokenManger(client_sc_Id,client_sc_secret,client_juniper_token,authToken,profileAddress);
+		
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/evento_data/{data}")
@@ -287,16 +311,17 @@ public class EventoController {
 	@RequestMapping(method = RequestMethod.GET, value = "/evento/all")
 	public @ResponseBody
 	List<EventObject> getEventiAll(HttpServletRequest request,HttpServletResponse response,
-			HttpSession session) throws TerritoryServiceException {
+			HttpSession session) throws TerritoryServiceException, AACException {
 		ObjectFilter filter = new ObjectFilter();
 		filter.setLimit(10);
 		
+			
 		TerritoryService territoryService = new TerritoryService(territoryAddress);
 	
 		filter.setTypes(Arrays.asList(new String[]{"universiadi13"}));
 		filter.setText("party");
 		filter.setFromTime(System.currentTimeMillis());
-		List<EventObject> events = territoryService.getEvents(filter, EasyTokenManger.getEasyTokenManger().getAuthToken());
+		List<EventObject> events = territoryService.getEvents(filter, easyTokenManger.getAuthToken());
 	
 
 		return events;

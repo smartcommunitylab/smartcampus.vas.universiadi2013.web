@@ -38,12 +38,36 @@ public class POIController {
 	@Value("${territory.address}")
 	private String territoryAddress;
 	
+	@Autowired
+	@Value("${clientidsc}")
+	private String client_sc_Id;
+
+	@Autowired
+	@Value("${clientscsecrect}")
+	private String client_sc_secret;
+	
+	@Autowired
+	@Value("${fix.juniper.token}")
+	private String client_juniper_token;
+	
+	@Autowired
+	@Value("${profile.address}")
+	private String profileAddress;
+	
+	@Autowired
+	@Value("${auth_token}")
+	private String authToken;
+	
+	private EasyTokenManger easyTokenManger;
 
 	private ArrayList<POIObj> mListaPOI;
 
 	@PostConstruct
 	public void init() {
 		mListaPOI = ContainerPOI.getPOI();
+		easyTokenManger=new EasyTokenManger(client_sc_Id,client_sc_secret,client_juniper_token,authToken,profileAddress);
+		
+		
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/poi/{type}")
@@ -83,11 +107,10 @@ public class POIController {
 			@RequestBody GeoPoint poi) throws DataException, IOException,
 			NotFoundException, TerritoryServiceException {
 		
-		
-		TerritoryService territoryService = new TerritoryService(territoryAddress);
+			TerritoryService territoryService = new TerritoryService(territoryAddress);
 		ObjectFilter filter = new ObjectFilter();
 		filter.setTypes(Arrays.asList(new String[]{"universiadi13 - Venues"}));
-		List<POIObject> pois = territoryService.getPOIs(filter ,EasyTokenManger.getEasyTokenManger().getAuthToken());
+		List<POIObject> pois = territoryService.getPOIs(filter ,easyTokenManger.getAuthToken());
 		return pois;
 	}
 
