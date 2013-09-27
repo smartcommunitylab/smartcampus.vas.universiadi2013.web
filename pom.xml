@@ -16,17 +16,19 @@
 
 	<dependencies>
 
-		<dependency>
-			<groupId>eu.trentorise.smartcampus</groupId>
-			<artifactId>ac-service-provider-api</artifactId>
-			<version>${ac-service-provider-api}</version>
-			<type>jar</type>
-		</dependency>
+		
 
 		<dependency>
-			<groupId>eu.trentorise.smartcampus</groupId>
-			<artifactId>syncstorage.web</artifactId>
-			<version>1.2</version>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-lgpl</artifactId>
+			<version>1.9.4</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-mongodb</artifactId>
+			<version>1.0.1.RELEASE</version>
 		</dependency>
 
 		<!-- this -->

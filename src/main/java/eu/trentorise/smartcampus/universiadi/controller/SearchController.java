@@ -21,8 +21,6 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 
-import eu.trentorise.smartcampus.presentation.common.exception.DataException;
-import eu.trentorise.smartcampus.presentation.common.exception.NotFoundException;
 import eu.trentorise.smartcampus.universiadi.model.EventObj;
 import eu.trentorise.smartcampus.universiadi.model.POIObj;
 import eu.trentorise.smartcampus.universiadi.model.SportObj;
@@ -262,8 +260,8 @@ public class SearchController {
 	public @ResponseBody
 	ArrayList<Object> searchEventi(HttpServletRequest request,
 			HttpServletResponse response, HttpSession session,
-			@RequestBody String domanda) throws DataException, IOException,
-			NotFoundException {
+			@RequestBody String domanda) throws  IOException
+			 {
 
 		domanda = domanda.toLowerCase();
 		domanda = domanda.replace("%27", " ");
@@ -287,8 +285,8 @@ public class SearchController {
 	public @ResponseBody
 	ArrayList<Object> searchPoi(HttpServletRequest request,
 			HttpServletResponse response, HttpSession session,
-			@RequestBody String domanda) throws DataException, IOException,
-			NotFoundException {
+			@RequestBody String domanda) throws  IOException
+			 {
 
 		domanda = domanda.toLowerCase();
 		domanda = domanda.replace("%27", " ");
@@ -312,8 +310,8 @@ public class SearchController {
 	public @ResponseBody
 	ArrayList<Object> searchSport(HttpServletRequest request,
 			HttpServletResponse response, HttpSession session,
-			@RequestBody String domanda) throws DataException, IOException,
-			NotFoundException {
+			@RequestBody String domanda) throws  IOException
+			 {
 
 		domanda = domanda.toLowerCase();
 		domanda = domanda.replace("%27", " ");

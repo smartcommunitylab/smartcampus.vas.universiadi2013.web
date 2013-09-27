@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import eu.trentorise.smartcampus.presentation.common.exception.DataException;
-import eu.trentorise.smartcampus.presentation.common.exception.NotFoundException;
 import eu.trentorise.smartcampus.universiadi.model.TicketObj;
 import eu.trentorise.smartcampus.universiadi.model.UserObj;
 import eu.trentorise.smartcampus.universiadi.model.containerData.ContainerUtenti;
@@ -59,8 +57,8 @@ public class RisolutoreController {
 	public @ResponseBody
 	boolean sendSMS(HttpServletRequest request, HttpServletResponse response,
 			HttpSession session, @RequestBody TicketObj ticket,
-			@RequestBody ArrayList<UserObj> receiver) throws DataException,
-			IOException, NotFoundException {
+			@RequestBody ArrayList<UserObj> receiver) throws 
+			IOException {
 		return true;
 	}
 
@@ -68,8 +66,8 @@ public class RisolutoreController {
 	public @ResponseBody
 	boolean sendHelpdesk(HttpServletRequest request,
 			HttpServletResponse response, HttpSession session,
-			@RequestBody TicketObj ticket) throws DataException, IOException,
-			NotFoundException {
+			@RequestBody TicketObj ticket) throws  IOException
+			 {
 		return true;
 	}
 

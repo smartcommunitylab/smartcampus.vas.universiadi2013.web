@@ -19,8 +19,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import eu.trentorise.smartcampus.ac.provider.filters.AcProviderFilter;
-import eu.trentorise.smartcampus.presentation.common.exception.DataException;
-import eu.trentorise.smartcampus.presentation.common.exception.NotFoundException;
 import eu.trentorise.smartcampus.universiadi.model.TurnoObj;
 import eu.trentorise.smartcampus.universiadi.model.UserObj;
 import eu.trentorise.smartcampus.universiadi.model.containerData.ContainerUtenti;
@@ -124,8 +122,8 @@ public class UserObjectController {
 	public @ResponseBody
 	ArrayList<UserObj> getAtletiForEvento(HttpServletRequest request,
 			HttpServletResponse response, HttpSession session,
-			@RequestBody TurnoObj turno) throws DataException, IOException,
-			NotFoundException {
+			@RequestBody TurnoObj turno) throws IOException
+			 {
 		ArrayList<UserObj> listaUtenti = new ArrayList<UserObj>();
 		ArrayList<UserObj> listaUtentiMatch = new ArrayList<UserObj>();
 		listaUtenti = ContainerUtenti.getUtenti();

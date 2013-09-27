@@ -28,8 +28,6 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 
 import eu.trentorise.smartcampus.aac.AACException;
-import eu.trentorise.smartcampus.presentation.common.exception.DataException;
-import eu.trentorise.smartcampus.presentation.common.exception.NotFoundException;
 import eu.trentorise.smartcampus.territoryservice.TerritoryService;
 import eu.trentorise.smartcampus.territoryservice.TerritoryServiceException;
 import eu.trentorise.smartcampus.territoryservice.model.EventObject;
@@ -65,8 +63,8 @@ public class EventoController {
 	private String profileAddress;
 	
 	@Autowired
-	@Value("${auth_token}")
-	private String authToken;
+	@Value("${usertoken}")
+	private String userToken;
 
 	@Autowired
 	MongoTemplate db;
@@ -81,7 +79,7 @@ public class EventoController {
 		mListaEventi = ContainerEventi.getEventi();
 		mListaMeeting = ContainerMeeting.getMeeting();
 		
-		easyTokenManger=new EasyTokenManger(client_sc_Id,client_sc_secret,client_juniper_token,authToken,profileAddress);
+		easyTokenManger=new EasyTokenManger(client_sc_Id,client_sc_secret,client_juniper_token,userToken,profileAddress);
 		
 	}
 
@@ -141,8 +139,8 @@ public class EventoController {
 	public @ResponseBody
 	ArrayList<AtletObj> getAtletiForEvento(HttpServletRequest request,
 			HttpServletResponse response, HttpSession session,
-			@RequestBody EventObj evento) throws DataException, IOException,
-			NotFoundException {
+			@RequestBody EventObj evento) throws  IOException
+			 {
 		for (EventObj obj : mListaEventi)
 			if (new SimpleDateFormat("dd.MM.yyyy").format(obj.getData())
 					.equalsIgnoreCase(
@@ -321,10 +319,10 @@ public class EventoController {
 		filter.setTypes(Arrays.asList(new String[]{"universiadi13"}));
 		filter.setText("party");
 		filter.setFromTime(System.currentTimeMillis());
-		List<EventObject> events = territoryService.getEvents(filter, easyTokenManger.getAuthToken());
+		List<EventObject> events = territoryService.getEvents(filter, easyTokenManger.getUserToken());
 	
 
-		return events;
+		return events; 
 	}
 
 }

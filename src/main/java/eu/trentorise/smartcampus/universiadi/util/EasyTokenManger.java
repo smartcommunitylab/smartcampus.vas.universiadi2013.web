@@ -26,7 +26,7 @@ public class EasyTokenManger {
 	/** Timeout (in ms) we specify for each http request */
 	public static final int HTTP_REQUEST_TIMEOUT_MS = 30 * 1000;
 
-	private String auth_token;
+	private String userToken;
 
 	
 	
@@ -37,17 +37,17 @@ public class EasyTokenManger {
 
 	private String juniperToken;
 
-	public EasyTokenManger(String clientId,String clientSecret,String juniperToken,String auth_token,String profileAddress){
+	public EasyTokenManger(String clientId,String clientSecret,String juniperToken,String userToken,String profileAddress){
 		this.clientId=clientId;
 		this.clientSecret=clientSecret;
 		this.profileAddress=profileAddress;
 		this.juniperToken=juniperToken;
-		this.auth_token=auth_token;
+		this.userToken=userToken;
 	}
 	
 
-	public String getAuthToken() {
-		return auth_token;
+	public String getUserToken() {
+		return userToken;
 
 	}
 
