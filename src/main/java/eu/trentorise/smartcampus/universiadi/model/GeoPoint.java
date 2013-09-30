@@ -38,4 +38,8 @@ public class GeoPoint implements Comparable<GeoPoint> {
 			return 0;
 		return -1;
 	}
+	
+	public String toJson(){
+		return "["+getLatGPS()+","+getLngGPS()+"]";
+	}
 }
