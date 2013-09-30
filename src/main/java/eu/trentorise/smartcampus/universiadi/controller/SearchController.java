@@ -21,9 +21,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 
-import eu.trentorise.smartcampus.universiadi.model.EventObj;
 import eu.trentorise.smartcampus.universiadi.model.UserObj;
-import eu.trentorise.smartcampus.universiadi.model.containerData.ContainerEventi;
 import eu.trentorise.smartcampus.universiadi.model.containerData.ContainerUtenti;
 
 @Controller("searchController")
@@ -34,12 +32,12 @@ public class SearchController {
 
 	@PostConstruct
 	public void init() {
-		DBCollection coll = db.getCollection("Eventi");
-		if (coll.count() == 0) {
-			ArrayList<EventObj> mListaEventi = ContainerEventi.getEventi();
-			for (EventObj evento : mListaEventi)
-				db.save(evento, "Eventi");
-		}
+//		DBCollection coll = db.getCollection("Eventi");
+//		if (coll.count() == 0) {
+//			ArrayList<EventObj> mListaEventi = ContainerEventi.getEventi();
+//			for (EventObj evento : mListaEventi)
+//				db.save(evento, "Eventi");
+//		}
 
 		DBCollection coll2 = db.getCollection("Utenti");
 		if (coll2.count() == 0) {

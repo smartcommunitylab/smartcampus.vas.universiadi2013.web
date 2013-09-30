@@ -1,8 +1,6 @@
 package eu.trentorise.smartcampus.universiadi.controller;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 
 import javax.annotation.PostConstruct;
@@ -10,16 +8,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.http.Header;
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.params.ConnManagerParams;
-import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
@@ -35,13 +29,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import eu.trentorise.smartcampus.aac.AACException;
-import eu.trentorise.smartcampus.aac.model.TokenData;
-import eu.trentorise.smartcampus.universiadi.model.GeoPoint;
 import eu.trentorise.smartcampus.universiadi.model.TicketObj;
 import eu.trentorise.smartcampus.universiadi.model.UserObj;
-import eu.trentorise.smartcampus.universiadi.model.containerData.ContainerEventi;
-import eu.trentorise.smartcampus.universiadi.model.containerData.ContainerMeeting;
 import eu.trentorise.smartcampus.universiadi.model.containerData.ContainerUtenti;
 import eu.trentorise.smartcampus.universiadi.util.EasyTokenManger;
 
@@ -189,13 +178,5 @@ public class RisolutoreController {
 
 	
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/ticket")
-	public @ResponseBody
-	TicketObj getTicket(HttpServletRequest request,HttpServletResponse response,
-			HttpSession session) {
 
-		
-
-		return new TicketObj(null, null, null, null, null, null);
-	}
 }

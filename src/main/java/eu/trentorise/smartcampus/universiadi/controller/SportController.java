@@ -19,9 +19,7 @@ import eu.trentorise.smartcampus.universiadi.model.SportObj;
 @Controller("sportController")
 public class SportController {
 
-	//ArrayList<SportObj> mListaAllSport = new ArrayList<SportObj>();
-
-	
+		
 	@Autowired
 	MongoTemplate db;
 	

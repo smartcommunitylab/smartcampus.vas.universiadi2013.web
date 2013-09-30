@@ -21,11 +21,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import eu.trentorise.smartcampus.territoryservice.TerritoryService;
 import eu.trentorise.smartcampus.territoryservice.TerritoryServiceException;
+import eu.trentorise.smartcampus.territoryservice.model.EventObject;
 import eu.trentorise.smartcampus.territoryservice.model.ObjectFilter;
 import eu.trentorise.smartcampus.territoryservice.model.POIObject;
-import eu.trentorise.smartcampus.universiadi.model.EventObj;
 import eu.trentorise.smartcampus.universiadi.model.GeoPoint;
-import eu.trentorise.smartcampus.universiadi.model.POIObj;
 import eu.trentorise.smartcampus.universiadi.util.EasyTokenManger;
 
 @Controller("poiController")
@@ -57,7 +56,6 @@ public class POIController {
 
 	private EasyTokenManger easyTokenManger;
 
-	private ArrayList<POIObj> mListaPOI;
 
 	@PostConstruct
 	public void init() {
@@ -89,15 +87,22 @@ public class POIController {
 
 	@RequestMapping(method = RequestMethod.POST, value = "/poi_evento")
 	public @ResponseBody
-	List<EventObj> getAtletiForEvento(HttpServletRequest request,
+	List<EventObject> getAtletiForEvento(HttpServletRequest request,
 			HttpServletResponse response, HttpSession session,
-			@RequestBody GeoPoint poi) throws IOException {
+			@RequestBody GeoPoint poi) throws IOException, TerritoryServiceException {
+		ObjectFilter filter = new ObjectFilter();
+		filter.setCenter(poi.getArray());
+		filter.setLimit(10);
+		
+			
+		TerritoryService territoryService = new TerritoryService(territoryAddress);
+	
+		filter.setTypes(Arrays.asList(new String[]{"universiadi13"}));
+		
+		List<EventObject> events = territoryService.getEvents(filter, easyTokenManger.getUserToken());
+	
 
-		for (POIObj obj : mListaPOI) {
-			if (obj.getGPS().compareTo(poi) == 0)
-				return obj.getEvento();
-		}
-		return null;
+		return events; 
 
 	}
 
