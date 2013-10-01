@@ -275,21 +275,24 @@ public class EventoController {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/evento/data/{data}")
 	public @ResponseBody
-	ArrayList<DBObject> getEventiPerData(HttpServletRequest request,
+	List<EventObject> getEventiPerData(HttpServletRequest request,
 			@PathVariable("data") long data, HttpServletResponse response,
-			HttpSession session) {
+			HttpSession session) throws TerritoryServiceException {
 
-		ArrayList<DBObject> evappl = new ArrayList<DBObject>();
-		DBCollection coll = db.getCollection("Eventi");
-		BasicDBObject query = new BasicDBObject("data", data);
-		DBCursor cursorEv = coll.find(query);
+		ObjectFilter filter = new ObjectFilter();
+		filter.setLimit(10);
+		filter.setFromTime(data);
+		
+			
+		TerritoryService territoryService = new TerritoryService(territoryAddress);
+	
+		filter.setTypes(Arrays.asList(new String[]{"universiadi13"}));
+		filter.setText("party");
+		filter.setFromTime(System.currentTimeMillis());
+		List<EventObject> events = territoryService.getEvents(filter, easyTokenManger.getUserToken());
+		
 
-		while (cursorEv.hasNext()) {
-			DBObject obj = cursorEv.next();
-			evappl.add(obj);
-		}
-
-		return evappl;
+		return events; 
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/evento/sport/{sport}")

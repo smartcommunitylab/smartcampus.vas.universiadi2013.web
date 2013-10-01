@@ -22,6 +22,8 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -31,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import eu.trentorise.smartcampus.network.JsonUtils;
 import eu.trentorise.smartcampus.universiadi.model.TicketObj;
 import eu.trentorise.smartcampus.universiadi.model.UserObj;
 import eu.trentorise.smartcampus.universiadi.model.containerData.ContainerUtenti;
@@ -81,19 +84,38 @@ public class RisolutoreController {
 	
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/categoria_volontari")
+
+	@RequestMapping(method = RequestMethod.GET, value = "/volontari/categorie")
 	public @ResponseBody
-	ArrayList<String> getCategorieVolontari(HttpServletRequest request,
-			HttpServletResponse response, HttpSession session) {
+	String getCategorieVolontari(HttpServletRequest request,
+			HttpServletResponse response, HttpServletResponse response1,
+			HttpSession session) throws JSONException {
 
-		
+		final HttpResponse resp;
 
-		ArrayList<String> mCategorie = new ArrayList<String>();
-		for (UserObj utente : ContainerUtenti.getUtenti())
-			if (!mCategorie.contains(utente.getAmbito()))
-				mCategorie.add(utente.getAmbito());
+		String url = juniperAddress + "getCategoriVolontari";
+		final HttpGet post = new HttpGet(url);
+		post.setHeader("Accept", "application/json");
+		post.setHeader("Authorization", easyTokenManger.getClientJuniperToken());
 
-		return mCategorie;
+		try {
+			resp = getHttpClient().execute(post);
+
+			final String responseString = EntityUtils
+					.toString(resp.getEntity());
+			if (resp.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+				return (responseString);
+			}
+
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return "";
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/utenti/{ambito}/{ruolo}")
@@ -121,20 +143,29 @@ public class RisolutoreController {
 	//List< HelpDeskTicketObj > getMyTickets()
 	public @ResponseBody
 	List<TicketObj> getMyTickets(HttpServletRequest request,
-			HttpServletResponse response, HttpSession session){
+			HttpServletResponse response, HttpSession session) throws JSONException{
 		final HttpResponse resp;	
-		
+		//List<TicketObj>
 		String url =  juniperAddress + "getMyTickets";
 		final HttpGet post = new HttpGet(url);				
 		post.setHeader("Authorization", easyTokenManger.getClientJuniperToken());
-		
+		List<TicketObj> result=new ArrayList<TicketObj>();
 
 		try {
 			resp = getHttpClient().execute(post);
 			
 			final String responseString = EntityUtils.toString(resp.getEntity());
+			
 			if (resp.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-				return new ArrayList();
+				
+				
+				JSONArray es=new JSONArray(responseString);
+				for(int index=0;index < es.length();index++){
+					result.add(new TicketObj().valueOf(es.getString(index)));
+				}
+				
+				
+				return result ;
 			}
 			
 		} catch (ClientProtocolException e) {
@@ -148,21 +179,15 @@ public class RisolutoreController {
 		return null;
 	}
 
-	@RequestMapping(method = RequestMethod.POST, value = "/send_helpdesk")
+	@RequestMapping(method = RequestMethod.POST, value = "/ticket/send")
 	public @ResponseBody
-	boolean sendHelpdesk(HttpServletRequest request,
+	TicketObj sendHelpdesk(HttpServletRequest request,
 			HttpServletResponse response,@RequestBody TicketObj ticket, HttpSession session) throws  IOException
 			 {
-		//,@RequestBody TicketObj ticket,
-		//boolean sendHelpdesk(TicketObj ticket)
-		//{"GPS": [0,0], "Descrizione": "test", "Ambito": "", "Foto": "", "Indirizzo": "via test","Telefono": "00000"}
-		
+	
 		
 		final HttpResponse resp;
 		
-		//test
-		//TicketObj ticket=new TicketObj(new GeoPoint(), "test",  "test",  "test",  "test",  "test");
-		//test
 		
 		
 		final StringEntity entity = new StringEntity(ticket.toJson(), HTTP.UTF_8);
@@ -174,13 +199,12 @@ public class RisolutoreController {
 		post.setHeader("Accept", "application/json");
 		post.setHeader("Authorization", easyTokenManger.getClientJuniperToken());
 		
-
 		try {
 			resp = getHttpClient().execute(post);
 			
 			final String responseString = EntityUtils.toString(resp.getEntity());
 			if (resp.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-				return (responseString.contains("NEW"));
+				return new TicketObj().valueOf(responseString);
 			}
 			
 		} catch (ClientProtocolException e) {
@@ -191,7 +215,7 @@ public class RisolutoreController {
 			e.printStackTrace();
 		}
 
-		return false;
+		return null;
 	}
 
 	

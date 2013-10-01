@@ -43,8 +43,6 @@ import eu.trentorise.smartcampus.universiadi.util.EasyTokenManger;
 @Controller("UserObjectController")
 public class UserObjectController {
 
-	
-
 	@Autowired
 	@Value("${clientidsc}")
 	private String client_sc_Id;
@@ -52,43 +50,37 @@ public class UserObjectController {
 	@Autowired
 	@Value("${clientscsecrect}")
 	private String client_sc_secret;
-	
+
 	@Autowired
 	@Value("${fix.juniper.token}")
-	private String client_juniper_token;	
+	private String client_juniper_token;
 
 	@Autowired
 	@Value("${usertoken}")
 	private String userToken;
 
-
 	@Autowired
 	@Value("${profile.address}")
 	private String profileAddress;
-	
+
 	/** Timeout (in ms) we specify for each http request */
 	public static final int HTTP_REQUEST_TIMEOUT_MS = 30 * 1000;
-	
-	
+
 	@Autowired
 	@Value("${juniper.address}")
 	private String juniperAddress;
 
-	
-	
 	private EasyTokenManger easyTokenManger;
 
-	
-		
 	@PostConstruct
 	public void init() {
-		easyTokenManger=new EasyTokenManger(client_sc_Id,client_sc_secret,client_juniper_token,userToken,profileAddress);
-	
+		easyTokenManger = new EasyTokenManger(client_sc_Id, client_sc_secret,
+				client_juniper_token, userToken, profileAddress);
+
 	}
 
 	@Autowired(required = false)
 	MongoTemplate db;
-
 
 	@RequestMapping(method = RequestMethod.GET, value = "/login/{user}/{password}")
 	public @ResponseBody
@@ -118,14 +110,13 @@ public class UserObjectController {
 	public @ResponseBody
 	UserObj getUserData(HttpServletRequest request,
 			HttpServletResponse response, HttpSession session) {
-		String token = request.getHeader(AcProviderFilter.TOKEN_HEADER);
 		
+
 		ArrayList<UserObj> mListaUtenti = ContainerUtenti.getUtenti();
-		for (UserObj utente : mListaUtenti)
-			if (utente.getToken() != null
-					&& utente.getToken().equalsIgnoreCase(token))
-				return utente;
-		return null;
+		if (mListaUtenti.isEmpty())
+			return null;
+		else
+			return mListaUtenti.get(0);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/anonymus_login")
@@ -158,7 +149,7 @@ public class UserObjectController {
 	boolean invalidateToken(HttpServletRequest request,
 			HttpServletResponse response, HttpSession session) {
 		String token = request.getHeader(AcProviderFilter.TOKEN_HEADER);
-		
+
 		ArrayList<UserObj> mListaUtenti = ContainerUtenti.getUtenti();
 		for (UserObj utente : mListaUtenti)
 			if (utente.getToken() != null
@@ -178,8 +169,7 @@ public class UserObjectController {
 	public @ResponseBody
 	ArrayList<UserObj> getAtletiForEvento(HttpServletRequest request,
 			HttpServletResponse response, HttpSession session,
-			@RequestBody TurnoObj turno) throws IOException
-			 {
+			@RequestBody TurnoObj turno) throws IOException {
 		ArrayList<UserObj> listaUtenti = new ArrayList<UserObj>();
 		ArrayList<UserObj> listaUtentiMatch = new ArrayList<UserObj>();
 		listaUtenti = ContainerUtenti.getUtenti();
@@ -204,41 +194,42 @@ public class UserObjectController {
 
 		return listaUtentiMatch;
 	}
-	
-	
+
 	@RequestMapping(method = RequestMethod.POST, value = "/utente/save")
 	public @ResponseBody
-	boolean saveUtente(HttpServletRequest request, HttpServletResponse response,
-			HttpServletResponse response1, HttpSession session,@RequestBody UtenteJuniper utentejuniper)
+	boolean saveUtente(HttpServletRequest request,
+			HttpServletResponse response, HttpServletResponse response1,
+			HttpSession session, @RequestBody UtenteJuniper utentejuniper)
 			throws JSONException {
-	
+
 		db.save(utentejuniper);
-		
+
 		return false;
 	}
-	
+
 	@RequestMapping(method = RequestMethod.GET, value = "/utente/{idutente}/funzioni")
 	public @ResponseBody
-	String funzioniUtente(HttpServletRequest request, HttpServletResponse response,
-			HttpServletResponse response1, HttpSession session,@PathVariable("idutente") String idutente)
+	String funzioniUtente(HttpServletRequest request,
+			HttpServletResponse response, HttpServletResponse response1,
+			HttpSession session, @PathVariable("idutente") String idutente)
 			throws JSONException {
-	
-		final HttpResponse resp;	
-				
-		String url =  juniperAddress + "getFunzioni?id=" + idutente;
-		final HttpGet post = new HttpGet(url);		
+
+		final HttpResponse resp;
+
+		String url = juniperAddress + "getFunzioni?id=" + idutente;
+		final HttpGet post = new HttpGet(url);
 		post.setHeader("Accept", "application/json");
 		post.setHeader("Authorization", easyTokenManger.getClientJuniperToken());
-		
 
 		try {
 			resp = getHttpClient().execute(post);
-			
-			final String responseString = EntityUtils.toString(resp.getEntity());
+
+			final String responseString = EntityUtils
+					.toString(resp.getEntity());
 			if (resp.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
 				return (responseString);
 			}
-			
+
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -249,42 +240,6 @@ public class UserObjectController {
 
 		return "";
 	}
-
-	
-	
-	@RequestMapping(method = RequestMethod.GET, value = "/volontari/categorie")
-	public @ResponseBody
-	String getCategorieVolontari(HttpServletRequest request, HttpServletResponse response,
-			HttpServletResponse response1, HttpSession session)
-			throws JSONException {
-	
-		final HttpResponse resp;	
-				
-		String url =  juniperAddress + "getCategoriVolontari" ;
-		final HttpGet post = new HttpGet(url);		
-		post.setHeader("Accept", "application/json");
-		post.setHeader("Authorization", easyTokenManger.getClientJuniperToken());
-		
-
-		try {
-			resp = getHttpClient().execute(post);
-			
-			final String responseString = EntityUtils.toString(resp.getEntity());
-			if (resp.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-				return (responseString);
-			}
-			
-		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return "";
-	}
-
 
 
 	protected static HttpClient getHttpClient() {
@@ -296,6 +251,5 @@ public class UserObjectController {
 		ConnManagerParams.setTimeout(params, HTTP_REQUEST_TIMEOUT_MS);
 		return httpClient;
 	}
-
 
 }
