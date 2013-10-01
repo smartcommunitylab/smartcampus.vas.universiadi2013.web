@@ -2,6 +2,7 @@ package eu.trentorise.smartcampus.universiadi.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +13,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.params.ConnManagerParams;
 import org.apache.http.entity.StringEntity;
@@ -113,6 +115,37 @@ public class RisolutoreController {
 			@RequestBody ArrayList<UserObj> receiver) throws 
 			IOException {
 		return true;
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/ticket/all")
+	//List< HelpDeskTicketObj > getMyTickets()
+	public @ResponseBody
+	List<TicketObj> getMyTickets(HttpServletRequest request,
+			HttpServletResponse response, HttpSession session){
+		final HttpResponse resp;	
+		
+		String url =  juniperAddress + "getMyTickets";
+		final HttpGet post = new HttpGet(url);				
+		post.setHeader("Authorization", easyTokenManger.getClientJuniperToken());
+		
+
+		try {
+			resp = getHttpClient().execute(post);
+			
+			final String responseString = EntityUtils.toString(resp.getEntity());
+			if (resp.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+				return new ArrayList();
+			}
+			
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/send_helpdesk")
