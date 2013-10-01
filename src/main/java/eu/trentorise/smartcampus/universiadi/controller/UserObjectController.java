@@ -64,14 +64,13 @@ public class UserObjectController {
 	public @ResponseBody
 	UserObj getUserData(HttpServletRequest request,
 			HttpServletResponse response, HttpSession session) {
-		String token = request.getHeader(AcProviderFilter.TOKEN_HEADER);
+	
 		
 		ArrayList<UserObj> mListaUtenti = ContainerUtenti.getUtenti();
-		for (UserObj utente : mListaUtenti)
-			if (utente.getToken() != null
-					&& utente.getToken().equalsIgnoreCase(token))
-				return utente;
-		return null;
+		if(!mListaUtenti.isEmpty())
+		return mListaUtenti.get(0);
+		else
+			return null;
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/anonymus_login")
