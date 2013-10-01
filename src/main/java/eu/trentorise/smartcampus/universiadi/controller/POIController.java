@@ -19,12 +19,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import eu.trentorise.smartcampus.presentation.common.exception.DataException;
+import eu.trentorise.smartcampus.presentation.common.exception.NotFoundException;
 import eu.trentorise.smartcampus.territoryservice.TerritoryService;
 import eu.trentorise.smartcampus.territoryservice.TerritoryServiceException;
-import eu.trentorise.smartcampus.territoryservice.model.EventObject;
 import eu.trentorise.smartcampus.territoryservice.model.ObjectFilter;
 import eu.trentorise.smartcampus.territoryservice.model.POIObject;
+import eu.trentorise.smartcampus.universiadi.model.EventObj;
 import eu.trentorise.smartcampus.universiadi.model.GeoPoint;
+import eu.trentorise.smartcampus.universiadi.model.POIObj;
+import eu.trentorise.smartcampus.universiadi.model.containerData.ContainerPOI;
 import eu.trentorise.smartcampus.universiadi.util.EasyTokenManger;
 
 @Controller("poiController")
@@ -33,94 +37,62 @@ public class POIController {
 	@Autowired
 	@Value("${territory.address}")
 	private String territoryAddress;
+	
 
-	@Autowired
-	@Value("${clientidsc}")
-	private String client_sc_Id;
-
-	@Autowired
-	@Value("${clientscsecrect}")
-	private String client_sc_secret;
-
-	@Autowired
-	@Value("${fix.juniper.token}")
-	private String client_juniper_token;
-
-	@Autowired
-	@Value("${profile.address}")
-	private String profileAddress;
-
-	@Autowired
-	@Value("${usertoken}")
-	private String userToken;
-
-	private EasyTokenManger easyTokenManger;
-
+	private ArrayList<POIObj> mListaPOI;
 
 	@PostConstruct
 	public void init() {
-		
-		easyTokenManger = new EasyTokenManger(client_sc_Id, client_sc_secret,
-				client_juniper_token, userToken, profileAddress);
-
+		mListaPOI = ContainerPOI.getPOI();
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/poi/{type}")
 	public @ResponseBody
-	List<POIObject> getPoiForType(HttpServletRequest request,
+	ArrayList<POIObj> getPoiForType(HttpServletRequest request,
 			@PathVariable("type") String type, HttpServletResponse response,
-			HttpSession session) throws TerritoryServiceException {
+			HttpSession session) {
 
-		TerritoryService territoryService = new TerritoryService(
-				territoryAddress);
-		ObjectFilter filter = new ObjectFilter();
-		List<String> s = new ArrayList<String>();
-		s.add(type);
+		
 
-		filter.setTypes(s);
-		filter.setTypes(Arrays
-				.asList(new String[] { "universiadi13 - Venues" }));
-		List<POIObject> pois = territoryService.getPOIs(filter,
-				easyTokenManger.getUserToken());
-		return pois;
+		ArrayList<POIObj> mResult = new ArrayList<POIObj>();
+		for (POIObj obj : mListaPOI)
+			if (obj.getCategoria().equalsIgnoreCase(type))
+				mResult.add(obj);
+
+		return mResult;
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/poi_evento")
 	public @ResponseBody
-	List<EventObject> getAtletiForEvento(HttpServletRequest request,
+	ArrayList<EventObj> getAtletiForEvento(HttpServletRequest request,
 			HttpServletResponse response, HttpSession session,
-			@RequestBody GeoPoint poi) throws IOException, TerritoryServiceException {
-		ObjectFilter filter = new ObjectFilter();
-		filter.setCenter(poi.getArray());
-		filter.setLimit(10);
-		
-			
-		TerritoryService territoryService = new TerritoryService(territoryAddress);
-	
-		filter.setTypes(Arrays.asList(new String[]{"universiadi13"}));
-		
-		List<EventObject> events = territoryService.getEvents(filter, easyTokenManger.getUserToken());
-	
+			@RequestBody GeoPoint poi) throws DataException, IOException,
+			NotFoundException {
 
-		return events; 
-
+		for (POIObj obj : mListaPOI) {
+			if (obj.getGPS().compareTo(poi) == 0)
+				return obj.getEvento();
+		}
+		return null;
 	}
 
-	@RequestMapping(method = RequestMethod.POST, value = "/poi/all")
+	@RequestMapping(method = RequestMethod.POST, value = "/poi_evento/all")
 	public @ResponseBody
 	List<POIObject> getAllPoi(HttpServletRequest request,
 			HttpServletResponse response, HttpSession session,
-			@RequestBody GeoPoint poi) throws IOException,
-			TerritoryServiceException {
-
-		TerritoryService territoryService = new TerritoryService(
-				territoryAddress);
+			@RequestBody GeoPoint poi) throws DataException, IOException,
+			NotFoundException, TerritoryServiceException {
+		
+		
+		TerritoryService territoryService = new TerritoryService(territoryAddress);
 		ObjectFilter filter = new ObjectFilter();
-		filter.setTypes(Arrays
-				.asList(new String[] { "universiadi13 - Venues" }));
-		List<POIObject> pois = territoryService.getPOIs(filter,
-				easyTokenManger.getUserToken());
+		filter.setTypes(Arrays.asList(new String[]{"universiadi13 - Venues"}));
+		List<POIObject> pois = territoryService.getPOIs(filter ,EasyTokenManger.getEasyTokenManger().getAuthToken());
 		return pois;
 	}
 
+	
+	
+	
+	
 }

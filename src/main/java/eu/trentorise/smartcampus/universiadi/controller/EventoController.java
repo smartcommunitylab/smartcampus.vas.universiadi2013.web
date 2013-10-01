@@ -27,13 +27,16 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 
-import eu.trentorise.smartcampus.aac.AACException;
+import eu.trentorise.smartcampus.presentation.common.exception.DataException;
+import eu.trentorise.smartcampus.presentation.common.exception.NotFoundException;
 import eu.trentorise.smartcampus.territoryservice.TerritoryService;
 import eu.trentorise.smartcampus.territoryservice.TerritoryServiceException;
 import eu.trentorise.smartcampus.territoryservice.model.EventObject;
 import eu.trentorise.smartcampus.territoryservice.model.ObjectFilter;
 import eu.trentorise.smartcampus.universiadi.model.AtletObj;
+import eu.trentorise.smartcampus.universiadi.model.EventObj;
 import eu.trentorise.smartcampus.universiadi.model.MeetingObj;
+import eu.trentorise.smartcampus.universiadi.model.containerData.ContainerEventi;
 import eu.trentorise.smartcampus.universiadi.model.containerData.ContainerMeeting;
 import eu.trentorise.smartcampus.universiadi.util.EasyTokenManger;
 
@@ -43,81 +46,53 @@ public class EventoController {
 	@Autowired
 	@Value("${territory.address}")
 	private String territoryAddress;
-	
-	@Autowired
-	@Value("${clientidsc}")
-	private String client_sc_Id;
-
-	@Autowired
-	@Value("${clientscsecrect}")
-	private String client_sc_secret;
-	
-	@Autowired
-	@Value("${fix.juniper.token}")
-	private String client_juniper_token;
-	
-	@Autowired
-	@Value("${profile.address}")
-	private String profileAddress;
-	
-	@Autowired
-	@Value("${usertoken}")
-	private String userToken;
 
 	@Autowired
 	MongoTemplate db;
 	
+	private ArrayList<EventObj> mListaEventi;
 	private ArrayList<MeetingObj> mListaMeeting;
 	
-	private EasyTokenManger easyTokenManger;
+	
 
 	@PostConstruct
 	public void init() {
-		
+		mListaEventi = ContainerEventi.getEventi();
 		mListaMeeting = ContainerMeeting.getMeeting();
-		
-		easyTokenManger=new EasyTokenManger(client_sc_Id,client_sc_secret,client_juniper_token,userToken,profileAddress);
-		
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/evento_data/{data}")
 	public @ResponseBody
-	List<EventObject> getEventiForData(HttpServletRequest request,
+	ArrayList<EventObj> getEventiForData(HttpServletRequest request,
 			@PathVariable("data") long data, HttpServletResponse response,
-			HttpSession session) throws TerritoryServiceException {
-		
-		ObjectFilter filter = new ObjectFilter();
-		filter.setLimit(10);
-		
-			
-		TerritoryService territoryService = new TerritoryService(territoryAddress);
-	
-		filter.setTypes(Arrays.asList(new String[]{"universiadi13"}));
-		filter.setFromTime(data);
-		List<EventObject> events = territoryService.getEvents(filter, easyTokenManger.getUserToken());
-	
+			HttpSession session) {
 
-		return events; 
+	
+		data = System.currentTimeMillis() + (3600 * 24 * 1000);
+		ArrayList<EventObj> mResult = new ArrayList<EventObj>();
+		for (EventObj obj : mListaEventi)
+			if (new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(
+					obj.getData()).equalsIgnoreCase(
+					new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+							.format(data)))
+				mResult.add(obj);
+
+		return mResult;
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/evento_sport/{sport}")
 	public @ResponseBody
-	List<EventObject> getEventiForData(HttpServletRequest request,
+	ArrayList<EventObj> getEventiForData(HttpServletRequest request,
 			@PathVariable("sport") String sport, HttpServletResponse response,
-			HttpSession session) throws TerritoryServiceException {
+			HttpSession session) {
 
-		ObjectFilter filter = new ObjectFilter();
-		filter.setLimit(10);
-		
-			
-		TerritoryService territoryService = new TerritoryService(territoryAddress);
 	
-		filter.setTypes(Arrays.asList(new String[]{"universiadi13"}));
-		filter.setText(sport);
-		List<EventObject> events = territoryService.getEvents(filter, easyTokenManger.getUserToken());
-	
+		ArrayList<EventObj> mResult = new ArrayList<EventObj>();
+		for (EventObj obj : mListaEventi)
+			if (obj.getTipoSport().equalsIgnoreCase(sport))
+				mResult.add(obj);
 
-		return events; 
+		return mResult;
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/meeting/{date}")
@@ -142,20 +117,20 @@ public class EventoController {
 	public @ResponseBody
 	ArrayList<AtletObj> getAtletiForEvento(HttpServletRequest request,
 			HttpServletResponse response, HttpSession session,
-			@RequestBody EventObject evento) throws  IOException
-			 {
-//		for (EventObject obj : mListaEventi)
-//			if (new SimpleDateFormat("dd.MM.yyyy").format(obj.getData())
-//					.equalsIgnoreCase(
-//							new SimpleDateFormat("dd.MM.yyyy").format(evento
-//									.getData()))
-//					&& obj.getDescrizione().equalsIgnoreCase(
-//							evento.getDescrizione())
-//					&& obj.getGps().compareTo(evento.getGps()) == 0
-//					&& obj.getNome().equalsIgnoreCase(evento.getNome())
-//					&& obj.getTipoSport().equalsIgnoreCase(
-//							evento.getTipoSport()))
-//				return obj.getListaAtleti();
+			@RequestBody EventObj evento) throws DataException, IOException,
+			NotFoundException {
+		for (EventObj obj : mListaEventi)
+			if (new SimpleDateFormat("dd.MM.yyyy").format(obj.getData())
+					.equalsIgnoreCase(
+							new SimpleDateFormat("dd.MM.yyyy").format(evento
+									.getData()))
+					&& obj.getDescrizione().equalsIgnoreCase(
+							evento.getDescrizione())
+					&& obj.getGps().compareTo(evento.getGps()) == 0
+					&& obj.getNome().equalsIgnoreCase(evento.getNome())
+					&& obj.getTipoSport().equalsIgnoreCase(
+							evento.getTipoSport()))
+				return obj.getListaAtleti();
 		return null;
 	}
 
@@ -186,22 +161,20 @@ public class EventoController {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/evento/id/{id}")
 	public @ResponseBody
-	List<EventObject> getEventoFromId(HttpServletRequest request,
+	ArrayList<DBObject> getEventoFromId(HttpServletRequest request,
 			@PathVariable("id") Long id, HttpServletResponse response,
-			HttpSession session) throws TerritoryServiceException {
-		ObjectFilter filter = new ObjectFilter();
-	
-		filter.setLimit(10);
-		//fake
-			
-		TerritoryService territoryService = new TerritoryService(territoryAddress);
-	
-		filter.setTypes(Arrays.asList(new String[]{"universiadi13"}));
-		
-		List<EventObject> events = territoryService.getEvents(filter, easyTokenManger.getUserToken());
-	
+			HttpSession session) {
+		ArrayList<DBObject> evappl = new ArrayList<DBObject>();
+		DBCollection coll = db.getCollection("Eventi");
+		BasicDBObject query = new BasicDBObject("ID", id);
+		DBCursor cursorEv = coll.find(query);
 
-		return events; 
+		while (cursorEv.hasNext()) {
+			DBObject obj = cursorEv.next();
+			evappl.add(obj);
+		}
+
+		return evappl;
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/evento/ard/{user_ambito}/{user_ruolo}/{data}")
@@ -314,20 +287,19 @@ public class EventoController {
 	@RequestMapping(method = RequestMethod.GET, value = "/evento/all")
 	public @ResponseBody
 	List<EventObject> getEventiAll(HttpServletRequest request,HttpServletResponse response,
-			HttpSession session) throws TerritoryServiceException, AACException {
+			HttpSession session) throws TerritoryServiceException {
 		ObjectFilter filter = new ObjectFilter();
 		filter.setLimit(10);
 		
-			
 		TerritoryService territoryService = new TerritoryService(territoryAddress);
 	
 		filter.setTypes(Arrays.asList(new String[]{"universiadi13"}));
 		filter.setText("party");
 		filter.setFromTime(System.currentTimeMillis());
-		List<EventObject> events = territoryService.getEvents(filter, easyTokenManger.getUserToken());
+		List<EventObject> events = territoryService.getEvents(filter, EasyTokenManger.getEasyTokenManger().getAuthToken());
 	
 
-		return events; 
+		return events;
 	}
 
 }

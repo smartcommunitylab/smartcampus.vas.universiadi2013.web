@@ -35,6 +35,8 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 
+import eu.trentorise.smartcampus.presentation.common.exception.DataException;
+import eu.trentorise.smartcampus.presentation.common.exception.NotFoundException;
 import eu.trentorise.smartcampus.universiadi.model.FAQObj;
 
 @Controller("FaqController")
@@ -297,7 +299,7 @@ public class FaqController {
 	public @ResponseBody
 	void insertfaq(HttpServletRequest request, HttpServletResponse response,
 			HttpSession session, @RequestBody FAQObj domanda)
-			throws  IOException, JSONException {
+			throws DataException, IOException, NotFoundException, JSONException {
 
 		dbinsert(domanda.getDomanda(), domanda.getRisposta());
 	}
@@ -306,7 +308,7 @@ public class FaqController {
 	public @ResponseBody
 	String[] sinonimi(HttpServletRequest request, HttpServletResponse response,
 			HttpSession session, @RequestBody String parola)
-			throws  IOException,  JSONException {
+			throws DataException, IOException, NotFoundException, JSONException {
 
 		String[] s = getSinonimi(parola);
 		return s;
@@ -316,8 +318,8 @@ public class FaqController {
 	public @ResponseBody
 	void insertmultifaq(HttpServletRequest request,
 			HttpServletResponse response, HttpSession session,
-			@RequestBody String domandaobj) throws  IOException
-			 {
+			@RequestBody String domandaobj) throws DataException, IOException,
+			NotFoundException {
 		try {
 			JSONArray domanda = (new JSONObject(domandaobj))
 					.getJSONArray("item");
@@ -341,8 +343,8 @@ public class FaqController {
 	public @ResponseBody
 	ArrayList<FAQObj> domandaFaq(HttpServletRequest request,
 			HttpServletResponse response, HttpSession session,
-			@RequestBody String domanda) throws  IOException
-			 {
+			@RequestBody String domanda) throws DataException, IOException,
+			NotFoundException {
 
 		domanda = domanda.replace("%27", " ");
 		domanda = domanda.replace("+", " ");

@@ -21,7 +21,15 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 
+import eu.trentorise.smartcampus.presentation.common.exception.DataException;
+import eu.trentorise.smartcampus.presentation.common.exception.NotFoundException;
+import eu.trentorise.smartcampus.universiadi.model.EventObj;
+import eu.trentorise.smartcampus.universiadi.model.POIObj;
+import eu.trentorise.smartcampus.universiadi.model.SportObj;
 import eu.trentorise.smartcampus.universiadi.model.UserObj;
+import eu.trentorise.smartcampus.universiadi.model.containerData.ContainerEventi;
+import eu.trentorise.smartcampus.universiadi.model.containerData.ContainerPOI;
+import eu.trentorise.smartcampus.universiadi.model.containerData.ContainerSport;
 import eu.trentorise.smartcampus.universiadi.model.containerData.ContainerUtenti;
 
 @Controller("searchController")
@@ -32,12 +40,12 @@ public class SearchController {
 
 	@PostConstruct
 	public void init() {
-//		DBCollection coll = db.getCollection("Eventi");
-//		if (coll.count() == 0) {
-//			ArrayList<EventObj> mListaEventi = ContainerEventi.getEventi();
-//			for (EventObj evento : mListaEventi)
-//				db.save(evento, "Eventi");
-//		}
+		DBCollection coll = db.getCollection("Eventi");
+		if (coll.count() == 0) {
+			ArrayList<EventObj> mListaEventi = ContainerEventi.getEventi();
+			for (EventObj evento : mListaEventi)
+				db.save(evento, "Eventi");
+		}
 
 		DBCollection coll2 = db.getCollection("Utenti");
 		if (coll2.count() == 0) {
@@ -46,19 +54,19 @@ public class SearchController {
 				db.save(utente, "Utenti");
 		}
 
-//		DBCollection coll3 = db.getCollection("SportObj");
-//		if (coll3.count() == 0) {
-//			ArrayList<SportObj> mListaSport = ContainerSport.getSport();
-//			for (SportObj sport : mListaSport)
-//				db.save(sport, "SportObj");
-//		}
+		DBCollection coll3 = db.getCollection("Sport");
+		if (coll3.count() == 0) {
+			ArrayList<SportObj> mListaSport = ContainerSport.getSport();
+			for (SportObj sport : mListaSport)
+				db.save(sport, "Sport");
+		}
 
-//		DBCollection coll4 = db.getCollection("POI");
-//		if (coll4.count() == 0) {
-//			ArrayList<POIObj> mListaPOI = ContainerPOI.getPOI();
-//			for (POIObj poi : mListaPOI)
-//				db.save(poi, "POI");
-//		}
+		DBCollection coll4 = db.getCollection("POI");
+		if (coll4.count() == 0) {
+			ArrayList<POIObj> mListaPOI = ContainerPOI.getPOI();
+			for (POIObj poi : mListaPOI)
+				db.save(poi, "POI");
+		}
 
 	}
 
@@ -113,7 +121,7 @@ public class SearchController {
 	//
 	// // //SPORT
 	//
-	// DBCollection collSP = db.getCollection("SportObj");
+	// DBCollection collSP = db.getCollection("Sport");
 	// // BasicDBObject queryForID = new BasicDBObject();
 	// ArrayList<BasicDBObject> listParamsSP = new ArrayList<BasicDBObject>();
 	// listParamsSP.add(new BasicDBObject("nome", java.util.regex.Pattern
@@ -177,7 +185,7 @@ public class SearchController {
 		ArrayList<Object> arrStMached = new ArrayList<Object>();
 		pattern = pattern.toLowerCase();
 
-		DBCollection coll = db.getCollection("POIObj");
+		DBCollection coll = db.getCollection("POI");
 		// BasicDBObject queryForID = new BasicDBObject();
 		ArrayList<BasicDBObject> listParams = new ArrayList<BasicDBObject>();
 		listParams.add(new BasicDBObject("nome", java.util.regex.Pattern
@@ -204,7 +212,7 @@ public class SearchController {
 		ArrayList<Object> arrStMached = new ArrayList<Object>();
 		pattern = pattern.toLowerCase();
 
-		DBCollection coll = db.getCollection("SportObj");
+		DBCollection coll = db.getCollection("Sport");
 		// BasicDBObject queryForID = new BasicDBObject();
 		ArrayList<BasicDBObject> listParams = new ArrayList<BasicDBObject>();
 		listParams.add(new BasicDBObject("nome", java.util.regex.Pattern
@@ -254,8 +262,8 @@ public class SearchController {
 	public @ResponseBody
 	ArrayList<Object> searchEventi(HttpServletRequest request,
 			HttpServletResponse response, HttpSession session,
-			@RequestBody String domanda) throws  IOException
-			 {
+			@RequestBody String domanda) throws DataException, IOException,
+			NotFoundException {
 
 		domanda = domanda.toLowerCase();
 		domanda = domanda.replace("%27", " ");
@@ -279,8 +287,8 @@ public class SearchController {
 	public @ResponseBody
 	ArrayList<Object> searchPoi(HttpServletRequest request,
 			HttpServletResponse response, HttpSession session,
-			@RequestBody String domanda) throws  IOException
-			 {
+			@RequestBody String domanda) throws DataException, IOException,
+			NotFoundException {
 
 		domanda = domanda.toLowerCase();
 		domanda = domanda.replace("%27", " ");
@@ -304,8 +312,8 @@ public class SearchController {
 	public @ResponseBody
 	ArrayList<Object> searchSport(HttpServletRequest request,
 			HttpServletResponse response, HttpSession session,
-			@RequestBody String domanda) throws  IOException
-			 {
+			@RequestBody String domanda) throws DataException, IOException,
+			NotFoundException {
 
 		domanda = domanda.toLowerCase();
 		domanda = domanda.replace("%27", " ");

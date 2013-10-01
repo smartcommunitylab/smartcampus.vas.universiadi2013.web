@@ -4,7 +4,6 @@ public class GeoPoint implements Comparable<GeoPoint> {
 
 	public double latGPS;
 	public double lngGPS;
-	
 
 	public GeoPoint() {
 		this(0, 0);
@@ -38,13 +37,5 @@ public class GeoPoint implements Comparable<GeoPoint> {
 		if (o.getLatGPS() == latGPS && o.getLngGPS() == lngGPS)
 			return 0;
 		return -1;
-	}
-	
-	public String toJson(){
-		return "["+getLatGPS()+","+getLngGPS()+"]";
-	}
-	
-	public  double[] getArray(){
-		return new double[]{getLatGPS(),getLngGPS()};
 	}
 }
