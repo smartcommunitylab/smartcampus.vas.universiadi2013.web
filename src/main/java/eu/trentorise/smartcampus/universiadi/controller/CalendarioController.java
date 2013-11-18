@@ -124,7 +124,7 @@ public class CalendarioController {
 		return null;
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/meetings/{data}/{funzione}/{utente}")
+	@RequestMapping(method = RequestMethod.GET, value = "/meeting/{data}/{funzione}/{utente}")
 	public @ResponseBody
 	String getMeetings(
 			HttpServletRequest request, @PathVariable("data") long data,

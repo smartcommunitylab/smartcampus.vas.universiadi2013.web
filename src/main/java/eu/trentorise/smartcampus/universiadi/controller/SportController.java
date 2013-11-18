@@ -11,6 +11,8 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +24,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 
+import eu.trentorise.smartcampus.universiadi.model.Domanda;
 import eu.trentorise.smartcampus.universiadi.model.SportObj;
 
 @Controller("sportController")
@@ -119,54 +122,39 @@ public class SportController {
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/search/sport")
 	public @ResponseBody
-	ArrayList<Object> searchSport(HttpServletRequest request,
+	List<SportObj> searchSport(HttpServletRequest request,
 			HttpServletResponse response, HttpSession session,
-			@RequestBody String domanda) throws  IOException
+			@RequestBody Domanda domanda) throws  IOException
 			 {
 
-		domanda = domanda.toLowerCase();
-		domanda = domanda.replace("%27", " ");
-		domanda = domanda.replace("+", " ");
-		domanda = domanda.replace("=", "");
-		domanda = domanda.replace("%3B", " ");
-		domanda = domanda.replace("%2C", " ");
-		domanda = domanda.replace(".", " ");
-		domanda = domanda.replace("%21", " ");
-		domanda = domanda.replace("è", "�");
-		domanda = domanda.replaceAll("\\s+$", "");
-		domanda = domanda.replace("  ", " ");
+		
+		String faq=domanda.getNome();
+		faq = faq.toLowerCase();
+		faq = faq.replace("%27", " ");
+		faq = faq.replace("+", " ");
+		faq = faq.replace("=", "");
+		faq = faq.replace("%3B", " ");
+		faq = faq.replace("%2C", " ");
+		faq = faq.replace(".", " ");
+		faq = faq.replace("%21", " ");
+		faq = faq.replace("è", "�");
+		faq = faq.replaceAll("\\s+$", "");
+		faq = faq.replace("  ", " ");
 
-		ArrayList<Object> answerList = getSportMatchFromDb(db, domanda);
+		return  getSportMatchFromDb(faq);
 
-		return answerList;
+		
 
 	}
 
-	public ArrayList<Object> getSportMatchFromDb(MongoTemplate db,
+	public List<SportObj> getSportMatchFromDb(
 			String pattern) {
+		Query query6 = new Query();
+		query6.addCriteria(Criteria.where("nome").regex(pattern,"i"));
 
-		ArrayList<Object> arrStMached = new ArrayList<Object>();
-		pattern = pattern.toLowerCase();
 
-		DBCollection coll = db.getCollection("Sport");
-		// BasicDBObject queryForID = new BasicDBObject();
-		ArrayList<BasicDBObject> listParams = new ArrayList<BasicDBObject>();
-		listParams.add(new BasicDBObject("nome", java.util.regex.Pattern
-				.compile(pattern, java.util.regex.Pattern.CASE_INSENSITIVE)));
-		listParams.add(new BasicDBObject("descrizione", java.util.regex.Pattern
-				.compile(pattern, java.util.regex.Pattern.CASE_INSENSITIVE)));
 
-		BasicDBObject query = new BasicDBObject();
-		query.put("$or", listParams);
-		DBCursor cursorID = coll.find(query);
-
-		while (cursorID.hasNext()) {
-			DBObject obj = cursorID.next();
-
-			arrStMached.add(obj);
-		}
-
-		return arrStMached;
+		return db.find(query6,SportObj.class);
 
 	}
 

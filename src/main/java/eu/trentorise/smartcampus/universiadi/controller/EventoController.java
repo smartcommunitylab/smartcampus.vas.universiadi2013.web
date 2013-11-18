@@ -3,7 +3,9 @@ package eu.trentorise.smartcampus.universiadi.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -78,9 +80,12 @@ public class EventoController {
 		
 		TerritoryService territoryService = new TerritoryService(territoryAddress);
 	
-		filter.setTypes(Arrays.asList(new String[]{"universiadi13"}));
+
+		Map<String,Object> map =new HashMap<String,Object>();
+		map.put("source", "Universiadi 2013");
+		
+		filter.setCriteria(map);
 		filter.setFromTime(data);
-		filter.setFromTime(System.currentTimeMillis());
 		List<EventObject> events = territoryService.getEvents(filter, tkm.getClientSmartCampusToken());
 	
 
@@ -98,9 +103,13 @@ public class EventoController {
 		
 		TerritoryService territoryService = new TerritoryService(territoryAddress);
 	
-		filter.setTypes(Arrays.asList(new String[]{"universiadi13"}));
+
+		Map<String,Object> map =new HashMap<String,Object>();
+		map.put("source", "Universiadi 2013");
+		
+		filter.setCriteria(map);
+		
 		filter.setText(sport);
-		filter.setFromTime(System.currentTimeMillis());
 		List<EventObject> events = territoryService.getEvents(filter, tkm.getClientSmartCampusToken());
 	
 
@@ -116,8 +125,13 @@ public class EventoController {
 		
 		TerritoryService territoryService = new TerritoryService(territoryAddress);
 	
-		filter.setTypes(Arrays.asList(new String[]{"universiadi13"}));	
-		filter.setFromTime(System.currentTimeMillis());
+
+		Map<String,Object> map =new HashMap<String,Object>();
+		map.put("source", "Universiadi 2013");
+		
+		filter.setCriteria(map);
+		
+
 		List<EventObject> events = territoryService.getEvents(filter, tkm.getClientSmartCampusToken());
 	
 
@@ -136,10 +150,16 @@ public class EventoController {
 		filter.setLimit(10);
 		filter.setText(domanda.getNome());
 		
+	
+		
 		TerritoryService territoryService = new TerritoryService(territoryAddress);
 	
-		filter.setTypes(Arrays.asList(new String[]{"universiadi13"}));	
-		filter.setFromTime(System.currentTimeMillis());
+
+		Map<String,Object> map =new HashMap<String,Object>();
+		map.put("source", "Universiadi 2013");
+		
+		filter.setCriteria(map);
+
 		List<EventObject> events = territoryService.getEvents(filter, tkm.getClientSmartCampusToken());
 	
 
