@@ -3,7 +3,9 @@ package eu.trentorise.smartcampus.universiadi.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -30,6 +32,8 @@ import eu.trentorise.smartcampus.universiadi.util.EasyTokenManger;
 
 @Controller("poiController")
 public class POIController {
+
+	private static final String SOURCE = "Universiadi 2013";
 
 	@Autowired
 	@Value("${juniper.address}")
@@ -70,8 +74,13 @@ public class POIController {
 		ObjectFilter filter = new ObjectFilter();
 		List<String> x=new ArrayList<String>();
 		x.add(type);
-		filter.setTypes(x);
-		filter.setTypes(Arrays.asList(new String[]{"universiadi13 - Venues"}));
+		//filter.setTypes(x);
+		filter.setText(type);
+		Map<String,Object> map =new HashMap<String,Object>();
+		map.put("source", SOURCE);
+		
+		filter.setCriteria(map);
+
 		List<POIObject> pois = territoryService.getPOIs(filter ,tkm.getClientSmartCampusToken());
 		return pois;
 	}
@@ -86,7 +95,11 @@ public class POIController {
 		TerritoryService territoryService = new TerritoryService(territoryAddress);
 		ObjectFilter filter = new ObjectFilter();
 		filter.setCenter(poi.getArray());
-		filter.setTypes(Arrays.asList(new String[]{"universiadi13 - Venues"}));
+		Map<String,Object> map =new HashMap<String,Object>();
+		map.put("source", SOURCE);
+		
+		filter.setCriteria(map);
+
 		List<POIObject> pois = territoryService.getPOIs(filter ,tkm.getClientSmartCampusToken());
 		return pois;
 	}
@@ -100,12 +113,16 @@ public class POIController {
 		
 		TerritoryService territoryService = new TerritoryService(territoryAddress);
 		ObjectFilter filter = new ObjectFilter();
-		filter.setTypes(Arrays.asList(new String[]{"universiadi13 - Venues"}));
+		Map<String,Object> map =new HashMap<String,Object>();
+		map.put("source", SOURCE);
+		
+		filter.setCriteria(map);
+
 		List<POIObject> pois = territoryService.getPOIs(filter ,tkm.getClientSmartCampusToken());
 		return pois;
 	}
 	
-	@RequestMapping(method = RequestMethod.POST, value = "/search/poi")
+	@RequestMapping(method = RequestMethod.POST, value = "/poi/search")
 	public @ResponseBody
 	List<POIObject> searchPoi(HttpServletRequest request,
 			HttpServletResponse response, HttpSession session,
@@ -117,7 +134,11 @@ public class POIController {
 		TerritoryService territoryService = new TerritoryService(territoryAddress);
 		ObjectFilter filter = new ObjectFilter();
 		filter.setText(domanda.getNome());
-		filter.setTypes(Arrays.asList(new String[]{"universiadi13 - Venues"}));
+		Map<String,Object> map =new HashMap<String,Object>();
+		map.put("source", SOURCE);
+		
+		filter.setCriteria(map);
+
 		List<POIObject> pois = territoryService.getPOIs(filter ,tkm.getClientSmartCampusToken());
 		return pois;
 

@@ -8,6 +8,7 @@ public class SportObj {
 	private GPS[] geolocations;
 	private String atleti;
 	private String specialita;
+	private String nomeEn;
 	
 
 	public SportObj() {
@@ -70,6 +71,16 @@ public class SportObj {
 	public void setSpecialita(String specialita) {
 		this.specialita = specialita;
 	}
+
+	public String getNomeEn() {
+		return nomeEn;
+	}
+
+	public void setNomeEn(String nomeEn) {
+		this.nomeEn = nomeEn;
+	}
+
+	
 
 	
 }

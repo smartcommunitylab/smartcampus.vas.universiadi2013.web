@@ -33,6 +33,9 @@ import eu.trentorise.smartcampus.universiadi.util.EasyTokenManger;
 @Controller("eventoController")
 public class EventoController {
 	
+	private static final String SOURCE = "Universiadi 2013 - Events";
+	private static final String SOURCE_2 = "Universiadi 2013 - Schedule";
+
 	@Autowired
 	@Value("${territory.address}")
 	private String territoryAddress;
@@ -82,7 +85,11 @@ public class EventoController {
 	
 
 		Map<String,Object> map =new HashMap<String,Object>();
-		map.put("source", "Universiadi 2013");
+		String[] x=new String[2];
+		x[0]=SOURCE;
+		x[1]=SOURCE_2;
+		map.put("source", x);
+		
 		
 		filter.setCriteria(map);
 		filter.setFromTime(data);
@@ -103,13 +110,37 @@ public class EventoController {
 		
 		TerritoryService territoryService = new TerritoryService(territoryAddress);
 	
-
 		Map<String,Object> map =new HashMap<String,Object>();
-		map.put("source", "Universiadi 2013");
+		String[] x=new String[2];
+		x[0]=SOURCE;
+		x[1]=SOURCE_2;
+		map.put("source", x);
+		
 		
 		filter.setCriteria(map);
 		
-		filter.setText(sport);
+		Map<String,String> mapMatch=new HashMap<String, String>();
+		mapMatch.put("sci alpino","Alpine Skiing");
+		mapMatch.put("sci","Ski Jumping");
+		mapMatch.put("pattinaggio","Speed Skating");
+		mapMatch.put("pattinaggio","Short Track Speed Skating");
+		mapMatch.put("hockey","IceHockey");
+		mapMatch.put("curling","Curling");
+		mapMatch.put("biathlon","Biathlon");
+		mapMatch.put("snowboard","Snowboarding");
+		mapMatch.put("combinata nordica","Nordic Combined");
+		mapMatch.put("freestyle","Freestyle Skiing");
+		
+		if(mapMatch.containsKey(sport)){
+			List<String> list=new ArrayList();
+			list.add(mapMatch.get(sport));
+			filter.setTypes(list);
+		}else{
+			
+			filter.setText(sport);
+		}
+
+
 		List<EventObject> events = territoryService.getEvents(filter, tkm.getClientSmartCampusToken());
 	
 
@@ -127,9 +158,10 @@ public class EventoController {
 	
 
 		Map<String,Object> map =new HashMap<String,Object>();
-		map.put("source", "Universiadi 2013");
-		
-		filter.setCriteria(map);
+		String[] x=new String[2];
+		x[0]=SOURCE;
+		x[1]=SOURCE_2;
+		map.put("source", x);
 		
 
 		List<EventObject> events = territoryService.getEvents(filter, tkm.getClientSmartCampusToken());
@@ -139,7 +171,7 @@ public class EventoController {
 	}
 
 	
-	@RequestMapping(method = RequestMethod.POST, value = "/search/eventi")
+	@RequestMapping(method = RequestMethod.POST, value = "/evento/search")
 	public @ResponseBody
 	List<EventObject> searchEventi(HttpServletRequest request,
 			HttpServletResponse response, HttpSession session,
@@ -156,7 +188,10 @@ public class EventoController {
 	
 
 		Map<String,Object> map =new HashMap<String,Object>();
-		map.put("source", "Universiadi 2013");
+		String[] x=new String[2];
+		x[0]=SOURCE;
+		x[1]=SOURCE_2;
+		map.put("source", x);
 		
 		filter.setCriteria(map);
 
