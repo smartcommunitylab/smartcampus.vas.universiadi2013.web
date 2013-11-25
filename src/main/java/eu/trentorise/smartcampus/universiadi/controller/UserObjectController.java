@@ -154,4 +154,12 @@ public class UserObjectController {
 
 		return null;
 	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/anonymus_login")
+	public @ResponseBody
+	String getAnonymousToken(HttpServletRequest request,
+			HttpServletResponse response, HttpSession session) {
+
+		return "token_anonymous";
+	}
 }

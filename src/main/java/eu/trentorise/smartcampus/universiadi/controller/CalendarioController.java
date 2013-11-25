@@ -124,19 +124,18 @@ public class CalendarioController {
 		return null;
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/meeting/{data}/{funzione}/{utente}")
+	@RequestMapping(method = RequestMethod.GET, value = "/meeting/{data}/{funzione}")
 	public @ResponseBody
 	String getMeetings(
 			HttpServletRequest request, @PathVariable("data") long data,
 			@PathVariable("funzione") String funzione,
-			@PathVariable("utente") String utente,
 			HttpServletResponse response, HttpSession session) {
 		
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
 		Date x=new Date(data);
 		
 		  final HttpResponse resp;
-	        String url = url_juniper + "getTurniForDataAndFunzione?date="+sdf.format(x)+"&idfunzione="+funzione+"&idutente="+utente;
+	        String url = url_juniper + "getTurniForDataAndFunzione?date="+sdf.format(x)+"&idfunzione="+funzione;
 	        System.out.println(url);
 	        final HttpGet get = new HttpGet(url);
 	        get.setHeader("Accept", "application/json");
