@@ -37,32 +37,33 @@ public class POIController {
 
 	@Autowired
 	@Value("${juniper.address}")
-	String url_juniper="https://smartcampus.eventbuilder.it/";
-	
-    public static final int HTTP_REQUEST_TIMEOUT_MS = 30 * 1000;
-    
-    @Autowired
+	String url_juniper = "https://smartcampus.eventbuilder.it/";
+
+	public static final int HTTP_REQUEST_TIMEOUT_MS = 30 * 1000;
+
+	@Autowired
 	@Value("${services.server}")
-    private String aacURL;
-    @Autowired
+	private String aacURL;
+	@Autowired
 	@Value("${territory.address}")
 	private String territoryAddress;
-    @Autowired
+	@Autowired
 	@Value("${client.id.sc}")
 	private String clientId;
-    @Autowired
+	@Autowired
 	@Value("${client.secret.sc}")
 	private String clientSecret;
-    @Autowired
+	@Autowired
 	@Value("${client.token.j}")
-    private String client_juniper_token;
-  private EasyTokenManger tkm;
-    
-    @PostConstruct
-    private void init(){
-	tkm= new EasyTokenManger(aacURL,clientId,clientSecret,client_juniper_token);
+	private String client_juniper_token;
+	private EasyTokenManger tkm;
 
-    }
+	@PostConstruct
+	private void init() {
+		tkm = new EasyTokenManger(aacURL, clientId, clientSecret,
+				client_juniper_token);
+
+	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/poi/{type}")
 	public @ResponseBody
@@ -70,18 +71,20 @@ public class POIController {
 			@PathVariable("type") String type, HttpServletResponse response,
 			HttpSession session) throws TerritoryServiceException, AACException {
 
-		TerritoryService territoryService = new TerritoryService(territoryAddress);
+		TerritoryService territoryService = new TerritoryService(
+				territoryAddress);
 		ObjectFilter filter = new ObjectFilter();
-		List<String> x=new ArrayList<String>();
+		List<String> x = new ArrayList<String>();
 		x.add(type);
-		//filter.setTypes(x);
-		filter.setText(type);
-		Map<String,Object> map =new HashMap<String,Object>();
+		// filter.setTypes(x);
+		filter.setText(findCategory(type)==null?type:findCategory(type));
+		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("source", SOURCE);
-		
+
 		filter.setCriteria(map);
 
-		List<POIObject> pois = territoryService.getPOIs(filter ,tkm.getClientSmartCampusToken());
+		List<POIObject> pois = territoryService.getPOIs(filter,
+				tkm.getClientSmartCampusToken());
 		return pois;
 	}
 
@@ -89,18 +92,20 @@ public class POIController {
 	public @ResponseBody
 	List<POIObject> getAtletiForEvento(HttpServletRequest request,
 			HttpServletResponse response, HttpSession session,
-			@RequestBody GPS poi) throws  IOException,
+			@RequestBody GPS poi) throws IOException,
 			TerritoryServiceException, AACException {
 
-		TerritoryService territoryService = new TerritoryService(territoryAddress);
+		TerritoryService territoryService = new TerritoryService(
+				territoryAddress);
 		ObjectFilter filter = new ObjectFilter();
 		filter.setCenter(poi.getArray());
-		Map<String,Object> map =new HashMap<String,Object>();
+		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("source", SOURCE);
-		
+
 		filter.setCriteria(map);
 
-		List<POIObject> pois = territoryService.getPOIs(filter ,tkm.getClientSmartCampusToken());
+		List<POIObject> pois = territoryService.getPOIs(filter,
+				tkm.getClientSmartCampusToken());
 		return pois;
 	}
 
@@ -108,42 +113,94 @@ public class POIController {
 	public @ResponseBody
 	List<POIObject> getAllPoi(HttpServletRequest request,
 			HttpServletResponse response, HttpSession session,
-			@RequestBody GPS poi) throws IOException, TerritoryServiceException, AACException {
-		
-		
-		TerritoryService territoryService = new TerritoryService(territoryAddress);
+			@RequestBody GPS poi) throws IOException,
+			TerritoryServiceException, AACException {
+
+		TerritoryService territoryService = new TerritoryService(
+				territoryAddress);
 		ObjectFilter filter = new ObjectFilter();
-		Map<String,Object> map =new HashMap<String,Object>();
+		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("source", SOURCE);
-		
+
 		filter.setCriteria(map);
 
-		List<POIObject> pois = territoryService.getPOIs(filter ,tkm.getClientSmartCampusToken());
+		List<POIObject> pois = territoryService.getPOIs(filter,
+				tkm.getClientSmartCampusToken());
 		return pois;
 	}
-	
+
 	@RequestMapping(method = RequestMethod.POST, value = "/poi/search")
 	public @ResponseBody
 	List<POIObject> searchPoi(HttpServletRequest request,
 			HttpServletResponse response, HttpSession session,
-			@RequestBody Domanda domanda) throws  IOException, TerritoryServiceException, AACException
-			 {
+			@RequestBody Domanda domanda) throws IOException,
+			TerritoryServiceException, AACException {
 
-	
-		
-		TerritoryService territoryService = new TerritoryService(territoryAddress);
+		TerritoryService territoryService = new TerritoryService(
+				territoryAddress);
 		ObjectFilter filter = new ObjectFilter();
 		filter.setText(domanda.getNome());
-		Map<String,Object> map =new HashMap<String,Object>();
+		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("source", SOURCE);
-		
+
 		filter.setCriteria(map);
 
-		List<POIObject> pois = territoryService.getPOIs(filter ,tkm.getClientSmartCampusToken());
+		List<POIObject> pois = territoryService.getPOIs(filter,
+				tkm.getClientSmartCampusToken());
 		return pois;
 
 	}
 
+	private String findCategory(String type) {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("Sport", "Sport");
+		map.put("Ski rental", "Noleggio Scii");
+		map.put("Ski School", "Scuola Scii");
+		map.put("Ice stadium", "Stadio del Ghiaccio");
+		map.put("Snowpark", "Snowpark");
+		map.put("Sports Field", "Campo Sportivo");
+		map.put("Freetime", "Tempo Libero");
+		map.put("Disco", "Disco");
+		map.put("Wellness", "Wellness");
+		map.put("Park", "Parco");
+		map.put("Museum", "Museo");
+		map.put("Theatre", "Teatro");
+		map.put("Eating", "Mangiare");
+		map.put("Pizzeria", "Pizzeria");
+		map.put("Restaurant", "Ristorante");
+		map.put("Agritourism", "Agriturismo");
+		map.put("Hut", "Malga");
+		map.put("Brewery", "Birreria");
+		map.put("Bar", "Bar");
+		map.put(" Ice Cream", "Gelateria");
+		map.put("Sleeping", "Dormire");
+		map.put("Hotel", "Hotel");
+		map.put("Residence", "Residence");
+		map.put("Garni", "Garni");
+		map.put("Refuge", "Rifugio");
+		map.put("Camping", "Camping");
+		map.put("Moving", "Muoversi");
+		map.put("Parking", "Parcheggio");
+		map.put("Service Station", "Stazione di Servizio");
+		map.put("Taxi", "Taxi");
+		map.put("Bus", "Autostazione");
+		map.put("Cableway", "Funivia");
+		map.put("Train Station", "Stazione dei Treni");
+		map.put("Bicycle Rental", "Noleggio Biciclette");
+		map.put("Services", "Servizi");
+		map.put("Health Services", "Servizi Sanitari");
+		map.put("Pharmacy", "Farmacia");
+		map.put("Wi-Fi", "Wi-Fi");
+		map.put("Info", "Info");
+		map.put("Post", "Posta");
+		map.put("Bank", "Banca");
+		map.put("Shopping", "Shopping");
+		map.put("Souvenir", "Souvenir");
+		map.put("Market", "Mercato");
+		map.put("Tobacco", "Tabaccheria");
+		
+		return map.get(type);
 
-	
+	}
+
 }

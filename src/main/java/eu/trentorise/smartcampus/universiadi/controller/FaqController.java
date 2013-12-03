@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
@@ -24,6 +25,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +39,7 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 
 import eu.trentorise.smartcampus.universiadi.model.FAQObj;
+import eu.trentorise.smartcampus.universiadi.model.SportObj;
 
 @Controller("FaqController")
 public class FaqController {
@@ -384,5 +388,24 @@ public class FaqController {
 		return answ;
 
 	}
+	@RequestMapping(method = RequestMethod.GET, value = "/domanda/all")
+	public @ResponseBody
+	List<FAQObj> getAllFaq(HttpServletRequest request,
+			HttpServletResponse response, HttpSession session) throws IOException {
+		
+		
+		return db.findAll(FAQObj.class);//,"faqObject"
+
+	}
+	@RequestMapping(method = RequestMethod.GET, value = "/domanda2/all")
+	public @ResponseBody
+	List<FAQObj> getAllFaq2(HttpServletRequest request,
+			HttpServletResponse response, HttpSession session) throws IOException {
+		
+		
+		return db.findAll(FAQObj.class,"faqObject");//
+
+	}
+
 
 }
