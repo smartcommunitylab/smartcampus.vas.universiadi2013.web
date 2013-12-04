@@ -3,6 +3,7 @@ package eu.trentorise.smartcampus.universiadi.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -90,9 +91,25 @@ public class EventoController {
 		x[1]=SOURCE_2;
 		map.put("source", x);
 		
+		Calendar c=Calendar.getInstance();
+		c.setTimeInMillis(data);
+		c.set(Calendar.HOUR_OF_DAY, 0);
+		c.set(Calendar.MINUTE,0);
+		c.set(Calendar.SECOND,0);
+		c.set(Calendar.MILLISECOND, 0);
+		
 		
 		filter.setCriteria(map);
-		filter.setFromTime(data);
+		filter.setFromTime(c.getTimeInMillis());
+		
+		
+		c.set(Calendar.HOUR_OF_DAY, 23);
+		c.set(Calendar.MINUTE,59);
+		c.set(Calendar.SECOND,59);
+
+		
+		
+		filter.setToTime(c.getTimeInMillis());
 		List<EventObject> events = territoryService.getEvents(filter, tkm.getClientSmartCampusToken());
 	
 

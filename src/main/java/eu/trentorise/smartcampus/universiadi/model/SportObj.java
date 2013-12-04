@@ -9,6 +9,7 @@ public class SportObj {
 	private String atleti;
 	private String specialita;
 	private String nomeEn;
+	private String descrizioneEn;
 	
 
 	public SportObj() {
@@ -78,6 +79,14 @@ public class SportObj {
 
 	public void setNomeEn(String nomeEn) {
 		this.nomeEn = nomeEn;
+	}
+
+	public String getDescrizioneEn() {
+		return descrizioneEn;
+	}
+
+	public void setDescrizioneEn(String descrizioneEn) {
+		this.descrizioneEn = descrizioneEn;
 	}
 
 	
