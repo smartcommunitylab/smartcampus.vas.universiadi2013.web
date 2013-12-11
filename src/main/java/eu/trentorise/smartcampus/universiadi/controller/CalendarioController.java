@@ -148,9 +148,10 @@ public class CalendarioController {
 	            	JSONArray array= new JSONArray(s);
 	            	for(int i=0;i<array.length();i++){
 	            		JSONObject obj=       array.getJSONObject(i);
+	            		if(obj.has("Labels")){
 	            		if(obj.getString("Labels").compareTo("Meeting")==0){
 	            			resultArray=resultArray+obj.toString()+",";
-	            		}
+	            		}}
 	            		
 	            	}
 	            		            	

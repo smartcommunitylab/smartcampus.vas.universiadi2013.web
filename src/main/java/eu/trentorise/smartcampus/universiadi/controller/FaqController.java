@@ -323,6 +323,10 @@ public class FaqController {
 			@RequestBody String domandaobj) throws  IOException
 			 {
 		try {
+			db.dropCollection("faqObject");//
+			db.dropCollection("idTagObject");//
+			
+			
 			JSONArray domanda = (new JSONObject(domandaobj))
 					.getJSONArray("item");
 			for (int o = 0; o < domanda.length(); o++) {

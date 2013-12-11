@@ -155,6 +155,33 @@ public class UserObjectController {
 		return null;
 	}
 	
+	@RequestMapping(method = RequestMethod.GET, value = "/utente/{idutente}/superiori/{idfunzione}")
+	public @ResponseBody
+	String getSuperioriUtenteFunzione(
+			HttpServletRequest request, 
+			@PathVariable("idutente") String utente,@PathVariable("idfunzione") String funzione,
+			HttpServletResponse response, HttpSession session) {
+		
+		  final HttpResponse resp;
+	        String url = url_juniper + "getSuperiori?idutente="+utente+"&idfunzione="+funzione;
+	        final HttpGet get = new HttpGet(url);
+	        get.setHeader("Accept", "application/json");
+	        get.setHeader("Authorization", tkm.getClientJuniperToken());
+	        try {
+	            resp = getHttpClient().execute(get);
+	            String s = EntityUtils.toString(resp.getEntity());
+	            if (resp.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+	            	return s;
+	            }
+	            throw new AACException("Error validating resource " + resp.getStatusLine());
+	        } catch (final Exception e) {
+	            e.printStackTrace();
+	        }
+		
+
+		return null;
+	}
+	
 	@RequestMapping(method = RequestMethod.GET, value = "/anonymus_login")
 	public @ResponseBody
 	String getAnonymousToken(HttpServletRequest request,

@@ -18,7 +18,7 @@ public class SportObj {
 
 	public SportObj(String nome, int foto, String descrizione,String specialita,String atleti) {
 		super();
-		this.nome = nome;
+		this.nomeEn = nome;
 		this.foto = foto;
 		this.descrizione = descrizione;
 		this.atleti=atleti;
